@@ -1,3 +1,20 @@
 body {
     background-color: ghostwhite;
 }
+html{
+    font-size: 16px;
+}
+
+h1{
+    font-size: 3rem;
+}
+
+form{
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+}
+form label{
+    display: flex;
+    flex-direction: column;
+}
