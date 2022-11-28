@@ -1,8 +1,9 @@
 import { createRoot } from "react-dom/client";
 import Welcome from "./welcome"
+// import Login from "./login"
 
 const root = createRoot(document.querySelector("main"));
-fetch('/user/id.json')
+fetch('/api/register/id.json')
     .then(response => response.json())
     .then(data => {
         if (!data.userId) {

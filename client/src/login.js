@@ -1,6 +1,10 @@
 export default function Login(){
 
-    return(<h2>Login</h2>
-    
+    return(
+        <form className="register">
+            <label htmlFor="email">
+                <input type="text" name="email"></input>
+            </label>
+        </form>
     )
 }

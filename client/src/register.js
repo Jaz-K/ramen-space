@@ -1,19 +1,19 @@
 export default function Register(){
 
-    async function handleSubmit(){
-        console.log('its submits')
-        //  const response = await fetch("/api/register")
-        // const formData = new FormData()
+    // async function handleSubmit(){
+    //     console.log('its submits')
+    //     //  const response = await fetch("/api/register")
+    //     // const formData = new FormData()
 
-       const response = await fetch("/api/register", {
-            method: "POST",
-            body: formData,
-           /*  headers: {
-                "Content-Type": "application/json",
-            } */
-        }
-        ) 
-    }
+    //    const response = await fetch("/api/register", {
+    //         method: "POST",
+    //         body: formData,
+    //        /*  headers: {
+    //             "Content-Type": "application/json",
+    //         } */
+    //     }
+    //     ) 
+    // }
     return(
     <form className="register">
         <label htmlFor="fname">First Name

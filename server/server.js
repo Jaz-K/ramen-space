@@ -19,7 +19,10 @@ app.use(express.static(path.join(__dirname, "..", "client", "public")));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// make a post request to server
+app.get("/api/user", (req,res)=>{
+    console.log("Test Get")
+})
+
 app.get("/api/register", (req, res)=>{
     console.log("GET register works")
     res.json()
