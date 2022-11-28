@@ -2,15 +2,17 @@ const express = require("express");
 const app = express();
 const compression = require("compression");
 const path = require("path");
+require("dotenv").config();
+
 const { PORT = 3001 } = process.env;
+const {  SESSION_SECRET } = process.env;
 const cookieSession = require("cookie-session");
 
 const { createUser, login } = require ("../db")
-
 //middleware
 app.use(
     cookieSession({
-        secret: "my secret text",
+        secret: SESSION_SECRET,
         maxAge: 1000 * 60 * 60 * 24 * 14,
         sameSite: true,
     })
@@ -21,19 +23,18 @@ app.use(express.static(path.join(__dirname, "..", "client", "public")));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-/* app.get('/api/user/id.json', function (req, res) {
+app.get('/api/user/id.json', function (req, res) {
     if(!req.session.userId){
         res.json(null)
     } else {
-    res.json({
-        userId: req.session.userId
-    });
-    }
-}); */
-
-app.get('/api/user/id.json', function (req, res) {
     res.json({ userId: req.session.userId });
-});
+    }
+}); 
+
+/* app.get('/api/user/id.json', function (req, res) {
+    console.log("req.session.userId",req.session.userId)
+    res.json({ userId: req.session.userId });
+}); */
 
 app.post("/api/users", async (req, res)=>{
         console.log("req.body", req.body)
