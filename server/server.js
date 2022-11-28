@@ -5,7 +5,7 @@ const path = require("path");
 const { PORT = 3001 } = process.env;
 const cookieSession = require("cookie-session");
 
-// const { createUser, login} = require ("../db")
+const { createUser, login } = require ("../db")
 
 //middleware
 app.use(
@@ -36,15 +36,41 @@ app.get('/api/user/id.json', function (req, res) {
 });
 
 app.post("/api/users", async (req, res)=>{
-    console.log("req.body", req.body)
-    // await createUser(req.body)
-    console.log("POST register works")
+        console.log("req.body", req.body)
+    try {
+
+    // console.log("POST register works")
+    const newUser = await createUser(req.body)
+    req.session.userId = newUser.id
     res.json({success: true})
+    } catch (error) {
+        console.log("POST users", error)
+        res
+        .status(500)
+        .json({error: "Something is really wrong"})
+    }
+
 })
 
 app.post("/api/login", async (req,res)=>{
-    console.log("req.body", req.body)
-    // await login(req.body)
+    try {
+    // console.log("req.body", req.body)
+    const user = await login(req.body)
+    if(!user){
+        res
+        .status(401)
+        .json({error: "Email or Password are not correct"})
+        return
+    }
+    req.session.userId = user.id
+    res.json({success: true})
+    } catch (error) {
+        console.log("POST login", error)
+        res
+        .status(500)
+        .json({error: "Something is really wrong"})
+    }
+
 } )
 
 /////// 

@@ -1,5 +1,9 @@
+import { useState } from "react"
 import { Link } from 'react-router-dom';
+
 export default function Login(){
+
+    const [error, setError] = useState("")
 
     async function onSubmit(event){
         event.preventDefault();
@@ -15,7 +19,18 @@ export default function Login(){
                 "Content-Type": "application/json",
             }
         }
-        ) 
+        )
+        if(response.ok){
+            window.location.href="/"
+            return
+        }
+
+        try {
+            const data = await response.json()
+            setError(data.error)
+        } catch (error) {
+            console.log("Something is really broken")
+        }
     }
 
     return(
@@ -23,12 +38,13 @@ export default function Login(){
             <form className="register">
                 <label htmlFor="email">Email
 
-                    <input type="text" name="email"/>
+                    <input type="text" name="email" required/>
                 </label>
                 <label htmlFor="password">Password
-                    <input type="password" name="password" />
+                    <input type="password" name="password" required/>
                 </label>
                 <button>Login</button>
+                {error && <p className="error">{error}</p>}
             </form>
             <Link to="/">Click here to Register</Link>
         </section>

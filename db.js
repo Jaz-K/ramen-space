@@ -29,8 +29,6 @@ async function createUser({ first_name, last_name, email, password }) {
     return result.rows[0];
 }
 
-// find User and login
-
 // GET USER BY EMAIL
 
 async function getUserByEmail(email) {
