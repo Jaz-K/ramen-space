@@ -23,24 +23,23 @@ app.use(express.static(path.join(__dirname, "..", "client", "public")));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.get('/api/user/id.json', function (req, res) {
+/* app.get('/api/user/id.json', function (req, res) {
     if(!req.session.userId){
         res.json(null)
     } else {
     res.json({ userId: req.session.userId });
     }
-}); 
+}); */
 
-/* app.get('/api/user/id.json', function (req, res) {
+app.get('/api/user/id.json', function (req, res) {
     console.log("req.session.userId",req.session.userId)
     res.json({ userId: req.session.userId });
-}); */
+});
 
 app.post("/api/users", async (req, res)=>{
         console.log("req.body", req.body)
     try {
 
-    // console.log("POST register works")
     const newUser = await createUser(req.body)
     req.session.userId = newUser.id
     res.json({success: true})

@@ -6,8 +6,10 @@ import User from "./user"
 const root = createRoot(document.querySelector("main"));
 fetch('/api/user/id.json')
     .then(response => response.json())
-    .then(data => {
+    .then(data => 
+       {
         if (!data.userId) {
+             console.log("Data", data)
             root.render(<Welcome />);
         } else {
             root.render(<User/>);
