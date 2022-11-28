@@ -55,3 +55,8 @@ async function login({ email, password }) {
     }
     return foundUser;
 }
+
+module.exports = {
+    createUser,
+    login
+}

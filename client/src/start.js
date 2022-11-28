@@ -3,7 +3,7 @@ import Welcome from "./welcome"
 // import Login from "./login"
 
 const root = createRoot(document.querySelector("main"));
-fetch('/api/register/id.json')
+fetch('/api/user/id.json')
     .then(response => response.json())
     .then(data => {
         if (!data.userId) {
