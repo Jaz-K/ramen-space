@@ -14,26 +14,24 @@ export default function App(){
         async function getUser(){
             const response = await fetch('/api/user/me')
             const parseJSON = await response.json()
-            console.log('parseJSON', parseJSON.loggedUser)
-            setUser(parseJSON.loggedUser)
+            // console.log('parseJSON', parseJSON)
+            setUser({...parseJSON, profile_picture_url: DEFAULT_AVATAR})
         }
         getUser();    
     }, [])
     console.log("user:",user)
+
     function onAvatarClick(){
-        console.log("Modal open")
         setModal(true)
     }
 
-    function onModalClose(){
-        console.log("Modal close")
+    function onModalClose(avatarUrl){
+        console.log(avatarUrl)
         setModal(false)
+        console.log({...user, profile_picture_url: avatarUrl})
+        setUser({...user, profile_picture_url: avatarUrl})
     }
-    
-    function onUpload(event){
-        event.preventDefault()
-        console.log("UploadClick")
-    }
+
 
     if(!user){
         return(
@@ -45,9 +43,9 @@ export default function App(){
         <section>
             <header>
                 <img className="logo" src="/logo.svg" alt="logo" />
-                <ProfileImage first_name={user.first_name} last_name={user.last_name} avatar={DEFAULT_AVATAR} onClick={onAvatarClick}/>
+                <ProfileImage first_name={user.first_name} last_name={user.last_name} avatar={user.profile_picture_url} onClick={onAvatarClick}/>
             </header>
-            {modal && <Modal onClose={onModalClose} onClick={onUpload}/>}
+            {modal && <Modal onClose={onModalClose} />}
         </section>
     )
 }

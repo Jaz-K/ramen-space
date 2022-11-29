@@ -66,8 +66,21 @@ async function getUserById(id) {
     return result.rows[0];
 }
 
+//UPDATE USER IMG
+
+async function updateAvatar({img, id}){
+    const result = await db.query(`
+    UPDATE users
+    SET profile_picture_url = $1
+    WHERE id = $2
+
+    `, [img, id])
+    return result.rows[0];
+}
+
 module.exports = {
     createUser,
     login,
-    getUserById
+    getUserById,
+    updateAvatar
 }
