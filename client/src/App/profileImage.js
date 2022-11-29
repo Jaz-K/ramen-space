@@ -1,4 +1,6 @@
-export default function ProfileImage(){
+export default function ProfileImage({first_name, last_name, avatar, onClick}){
 
-   return(<img className="logo" src="/avatar.svg" alt="avatar" />)
+   return(<img 
+      onClick={onClick}
+      className="logo" src={avatar} alt={`${first_name} ${last_name}`} />)
 }

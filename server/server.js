@@ -73,6 +73,10 @@ app.post("/api/login", async (req,res)=>{
 
 } )
 
+app.post("/api/users/profile_picture", (req, res)=>{
+    console.log("POST req")
+})
+
 /////// 
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
