@@ -8,7 +8,7 @@ const { PORT = 3001 } = process.env;
 const {  SESSION_SECRET } = process.env;
 const cookieSession = require("cookie-session");
 
-const { createUser, login } = require ("../db")
+const { createUser, login, getUserById } = require ("../db")
 //middleware
 app.use(
     cookieSession({
@@ -23,25 +23,25 @@ app.use(express.static(path.join(__dirname, "..", "client", "public")));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-/* app.get('/api/user/id.json', function (req, res) {
-    if(!req.session.userId){
-        res.json(null)
-    } else {
-    res.json({ userId: req.session.userId });
-    }
-}); */
 
-app.get('/api/user/id.json', function (req, res) {
-    console.log("req.session.userId",req.session.userId)
-    res.json({ userId: req.session.userId });
-});
+app.get("/api/user/me", async (req, res)=>{
+     if(!req.session.user_id){
+        res.json(null)
+        return
+    } 
+    console.log("req.session.user_id",req.session.user_id)
+    const loggedUser = await getUserById(req.session.user_id)
+    console.log(loggedUser)
+    res.json({ loggedUser });
+})
+
 
 app.post("/api/users", async (req, res)=>{
         console.log("req.body", req.body)
     try {
 
     const newUser = await createUser(req.body)
-    req.session.userId = newUser.id
+    req.session.user_id = newUser.id
     res.json({success: true})
     } catch (error) {
         console.log("POST users", error)
@@ -62,7 +62,7 @@ app.post("/api/login", async (req,res)=>{
         .json({error: "Email or Password are not correct"})
         return
     }
-    req.session.userId = user.id
+    req.session.user_id = user.id
     res.json({success: true})
     } catch (error) {
         console.log("POST login", error)

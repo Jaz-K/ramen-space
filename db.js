@@ -54,7 +54,20 @@ async function login({ email, password }) {
     return foundUser;
 }
 
+//current User
+
+async function getUserById(id) {
+    const result = await db.query(
+        `
+    SELECT * FROM users WHERE id = $1
+    `,
+        [id]
+    );
+    return result.rows[0];
+}
+
 module.exports = {
     createUser,
-    login
+    login,
+    getUserById
 }

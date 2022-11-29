@@ -4,13 +4,14 @@ import Login from "./login"
 
 export default function Welcome(){
     return(
-    <div>
+    <section className='welcome'>
         <h1>Welcome to my Flauschnet</h1>
+        <img className="logo" src="/logo.svg" alt="logo" />
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Register />}/>  
                 <Route path="/login" element={<Login />}/>  
             </Routes>
         </BrowserRouter>
-    </div>)
+    </section>)
 }
