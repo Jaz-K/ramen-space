@@ -6,7 +6,7 @@ const multer = require("multer");
 const uidSafe = require("uid-safe");
 require("dotenv").config();
 
-const { s3upload, s3delete } = require("../s3");
+const { s3upload } = require("../s3");
 
 const { PORT = 3001, AWS_BUCKET, SESSION_SECRET } = process.env;
 
@@ -58,7 +58,7 @@ app.get("/api/user/me", async (req, res)=>{
     const last_name = loggedUser.last_name
 
     res.json({first_name, last_name});
-    //{ first_name: loggedUser.first_name , last_name: loggedUser.last_name }
+
 })
 
 
@@ -99,12 +99,20 @@ app.post("/api/login", async (req,res)=>{
 
 } )
 
+/* app.post("/api/user/upload", (req,res)=>{
+console.log(req.file.filename);
+        console.log(req.body);
+        console.log(req.session.user_id);
+
+}) */
+
 app.post(
-    "/api/upload",
-    uploader.single("profile_picture_url"),
+    "/api/user/upload",
+    uploader.single("avatar"),
     s3upload,
     async (req, res) => {
         console.log(req.file.filename);
+        console.log(req.body);
         console.log(req.session.user_id);
         const id = req.session.user_id
         const url = `https://s3.amazonaws.com/${AWS_BUCKET}/${req.file.filename}`;

@@ -1,3 +1,8 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 body {
     background-color: ghostwhite;
 }
@@ -30,6 +35,17 @@ section.welcome .logo{
     width: 300px;
 }
 
+section.modal{
+    background-color: bisque;
+    padding: 3rem;
+    z-index: 1;
+    height: 500px;
+    width: 500px;
+    position: fixed;
+    top: calc(50% - 300px);
+    left: calc(50% - 300px);
+}
+
 h1{
     font-size: 3rem;
 }
@@ -46,4 +62,7 @@ form label{
 
 .logo{
     width: 100px;
+}
+.error{
+    color: red;
 }
