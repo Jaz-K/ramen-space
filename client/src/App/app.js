@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import ProfileImage from "./profileImage";
 import Modal from "./modal";
+import Profile from "./profile";
 
 export default function App() {
     const DEFAULT_AVATAR = "/avatar.svg";
@@ -13,13 +14,10 @@ export default function App() {
         async function getUser() {
             const response = await fetch("/api/user/me");
             const parseJSON = await response.json();
-            // console.log('parseJSON', parseJSON)
-            //if()
             setUser(parseJSON);
         }
         getUser();
     }, []);
-    console.log("user:", user);
 
     function onAvatarClick() {
         setModal(true);
@@ -30,9 +28,12 @@ export default function App() {
     }
 
     function onUpload(img_url) {
-        console.log({ ...user, img_url });
         setUser({ ...user, img_url });
         setModal(false);
+    }
+
+    function onBioUpdate() {
+        console.log("bioupdate");
     }
 
     if (!user) {
@@ -51,6 +52,13 @@ export default function App() {
                 />
             </header>
             {modal && <Modal onClose={onModalClose} onUpload={onUpload} />}
+            <Profile
+                first_name={user.first_name}
+                last_name={user.last_name}
+                img_url={user.img_url ? user.img_url : DEFAULT_AVATAR}
+                bio={user.bio}
+                onBioUpdate={onBioUpdate}
+            />
         </section>
     );
 }

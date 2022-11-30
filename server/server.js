@@ -12,7 +12,13 @@ const { PORT = 3001, AWS_BUCKET, SESSION_SECRET } = process.env;
 
 const cookieSession = require("cookie-session");
 
-const { createUser, login, getUserById, updateAvatar } = require("../db");
+const {
+    createUser,
+    login,
+    getUserById,
+    updateAvatar,
+    updateBio,
+} = require("../db");
 //middleware
 
 const diskStorage = multer.diskStorage({
@@ -55,8 +61,9 @@ app.get("/api/user/me", async (req, res) => {
     const first_name = loggedUser.first_name;
     const last_name = loggedUser.last_name;
     const img_url = loggedUser.img_url;
+    const bio = loggedUser.bio;
 
-    res.json({ first_name, last_name, img_url });
+    res.json({ first_name, last_name, img_url, bio });
 });
 
 app.post("/api/users", async (req, res) => {
@@ -89,19 +96,6 @@ app.post("/api/login", async (req, res) => {
     }
 });
 
-// app.post("/api/users/profile_picture", (req,res)=>{
-
-//     // console.log(req.file.filename);
-//         console.log(req.body);
-//         console.log(req.session.user_id);
-// /*     try {
-
-//     } catch (error) {
-//         console.log("something went wrong", error)
-//     } */
-
-// })
-
 app.post(
     "/api/users/profile_picture",
     uploader.single("avatar"),
@@ -122,6 +116,11 @@ app.post(
         }
     }
 );
+
+app.post("/api/users/bio", (req, res) => {
+    console.log("something happens here");
+    console.log(updateBio);
+});
 
 ///////
 app.get("*", function (req, res) {

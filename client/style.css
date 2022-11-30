@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -6,11 +6,11 @@
 body {
     background-color: ghostwhite;
 }
-html{
+html {
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
 }
-main{
+main {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,23 +19,23 @@ section header {
     width: 1000px;
 }
 
-header{
+header {
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
 
-section.welcome{
+section.welcome {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-section.welcome .logo{
+section.welcome .logo {
     width: 300px;
 }
 
-section.modal{
+section.modal {
     background-color: bisque;
     padding: 3rem;
     z-index: 1;
@@ -45,30 +45,37 @@ section.modal{
     top: calc(50% - 300px);
     left: calc(50% - 300px);
 }
-section.modal form{
+section.modal form {
     width: 100%;
 }
 
-h1{
+section.profile {
+    display: flex;
+}
+
+h1 {
     font-size: 3rem;
 }
-h2{
+h2 {
     font-size: 2.5rem;
 }
 
-form{
+form {
     width: 500px;
     display: flex;
     flex-direction: column;
 }
-form label{
+form label {
     display: flex;
     flex-direction: column;
 }
 
-.logo{
+.logo {
     width: 100px;
 }
-.error{
+.error {
     color: red;
+}
+img.user_img {
+    width: 200px;
 }

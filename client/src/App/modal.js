@@ -7,19 +7,14 @@ export default function Modal({ onClose, onUpload }) {
     async function avatarUpload(event) {
         try {
             event.preventDefault();
-            console.log("inside function");
             const formData = new FormData();
             formData.append("avatar", image);
-            console.log("image inside", image);
-            console.log("formData", formData);
 
             const response = await fetch("/api/users/profile_picture", {
                 method: "POST",
                 body: formData,
             });
-            console.log("response", response);
             const newAvatar = await response.json();
-            console.log("new Avatar", newAvatar);
 
             onUpload(newAvatar.img_url);
         } catch (error) {
@@ -29,7 +24,6 @@ export default function Modal({ onClose, onUpload }) {
 
     function handleChange(event) {
         const imageUrl = event.target.files[0];
-        // console.log("handle change", imageUrl)
         setimage(imageUrl);
     }
 
