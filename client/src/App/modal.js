@@ -21,7 +21,7 @@ export default function Modal({ onClose, onUpload }) {
             const newAvatar = await response.json();
             console.log("new Avatar", newAvatar);
 
-            onUpload(newAvatar);
+            onUpload(newAvatar.img_url);
         } catch (error) {
             console.log("error", error);
         }

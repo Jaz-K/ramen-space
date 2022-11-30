@@ -29,9 +29,9 @@ export default function App() {
         setModal(false);
     }
 
-    function onUpload(newAvatar) {
-        console.log({ ...user, img_url: newAvatar });
-        setUser({ ...user, img_url: newAvatar });
+    function onUpload(img_url) {
+        console.log({ ...user, img_url });
+        setUser({ ...user, img_url });
         setModal(false);
     }
 
