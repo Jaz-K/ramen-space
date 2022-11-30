@@ -20,6 +20,7 @@ export default function Modal({ onClose, onUpload }){
             });
             console.log("response", response);
             const newAvatar = await response.json();
+            console.log("new Avatar", newAvatar);
             
             onUpload(newAvatar)
             } catch (error) {

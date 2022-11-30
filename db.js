@@ -68,6 +68,7 @@ async function getUserById(id) {
 
 //UPDATE USER IMG
 
+// !!!! returning 
 async function updateAvatar({img, id}){
     const result = await db.query(`
     UPDATE users
