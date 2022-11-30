@@ -3,7 +3,7 @@ import { useState } from "react"
 export default function Modal({ onClose, onUpload }){
     const [image, setimage] = useState ("")
 
-        async function onUpload(event){
+        async function avatarUpload(event){
         event.preventDefault()
         
         const formData = new FormData();
@@ -11,7 +11,7 @@ export default function Modal({ onClose, onUpload }){
         console.log("image", image)
         console.log("formData", formData)
 
-            const response = await fetch("/api/user/upload", {
+            const response = await fetch("/api/users/profile_picture", {
                 method: "POST",
                 body: formData,
             });
@@ -32,7 +32,7 @@ export default function Modal({ onClose, onUpload }){
             <button onClick={onClose}>x</button>
             <h1>Upload New Avatar</h1>
             
-            <form onSubmit={onUpload} >
+            <form onSubmit={avatarUpload} >
                 <label htmlFor="avatar"></label>
                 <input type="file" id="avatar" accept="image/*" name="avatar" onChange={handleChange}/>
                 <button>Upload Avatar</button>

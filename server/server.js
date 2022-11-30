@@ -56,8 +56,9 @@ app.get("/api/user/me", async (req, res)=>{
     const loggedUser = await getUserById(req.session.user_id)
     const first_name = loggedUser.first_name
     const last_name = loggedUser.last_name
+    const profile_picture_url = loggedUser.profile_picture_url
 
-    res.json({first_name, last_name});
+    res.json({first_name, last_name,profile_picture_url});
 
 })
 
@@ -99,15 +100,20 @@ app.post("/api/login", async (req,res)=>{
 
 } )
 
-/* app.post("/api/user/upload", (req,res)=>{
-console.log(req.file.filename);
+/* app.post("/api/users/profile_picture", (req,res)=>{
+    try {
+        console.log(req.file.filename);
         console.log(req.body);
         console.log(req.session.user_id);
+    } catch (error) {
+        console.log("something went wrong", error)
+    }
+
 
 }) */
 
 app.post(
-    "/api/user/upload",
+    "/api/users/profile_picture",
     uploader.single("avatar"),
     s3upload,
     async (req, res) => {
@@ -116,10 +122,10 @@ app.post(
         console.log(req.session.user_id);
         const id = req.session.user_id
         const url = `https://s3.amazonaws.com/${AWS_BUCKET}/${req.file.filename}`;
-        const image = await updateAvatar({ url, id });
+        const avatar = await updateAvatar({ url, id });
 
         if (req.file) {
-            res.json(image);
+            res.json(avatar);
         } else {
             res.json({success: false});
         }

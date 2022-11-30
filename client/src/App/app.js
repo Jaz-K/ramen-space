@@ -7,14 +7,14 @@ export default function App(){
     const DEFAULT_AVATAR = "/avatar.svg"
 
     const [modal, setModal] = useState(false)
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState({profile_picture_url: DEFAULT_AVATAR})
     
     useEffect(()=>{
         async function getUser(){
             const response = await fetch('/api/user/me')
             const parseJSON = await response.json()
             // console.log('parseJSON', parseJSON)
-            setUser({...parseJSON, profile_picture_url: DEFAULT_AVATAR})
+            setUser(parseJSON)
         }
         getUser();    
     }, [])
@@ -28,9 +28,9 @@ export default function App(){
         setModal(false)
     }
 
-    function onUpload(avatarUrl){
-        console.log({...user, profile_picture_url: avatarUrl})
-        setUser({...user, profile_picture_url: avatarUrl})
+    function onUpload(newAvatar){
+        console.log({...user, profile_picture_url: newAvatar})
+        setUser({...user, profile_picture_url: newAvatar})
         setModal(false)
     }
 
