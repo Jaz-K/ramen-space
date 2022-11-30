@@ -8,7 +8,6 @@ const db = spicedPg(
     `postgres:${DATABASE_USERNAME}:${DATABASE_PASSWORD}@localhost:5432/${DATABASE_NAME}`
 );
 
-
 async function hashPassword(password) {
     const salt = await genSalt();
     return hash(password, salt);
@@ -68,14 +67,17 @@ async function getUserById(id) {
 
 //UPDATE USER IMG
 
-// !!!! returning 
-async function updateAvatar({img, id}){
-    const result = await db.query(`
+// !!!! returning
+async function updateAvatar({ img, id }) {
+    const result = await db.query(
+        `
     UPDATE users
-    SET profile_picture_url = $1
+    SET img_url = $1
     WHERE id = $2
-
-    `, [img, id])
+    RETURNING img_url
+    `,
+        [img, id]
+    );
     return result.rows[0];
 }
 
@@ -83,5 +85,5 @@ module.exports = {
     createUser,
     login,
     getUserById,
-    updateAvatar
-}
+    updateAvatar,
+};

@@ -30,8 +30,8 @@ export default function App() {
     }
 
     function onUpload(newAvatar) {
-        console.log({ ...user, profile_picture_url: newAvatar });
-        setUser({ ...user, profile_picture_url: newAvatar });
+        console.log({ ...user, img_url: newAvatar });
+        setUser({ ...user, img_url: newAvatar });
         setModal(false);
     }
 
@@ -46,11 +46,7 @@ export default function App() {
                 <ProfileImage
                     first_name={user.first_name}
                     last_name={user.last_name}
-                    avatar={
-                        user.profile_picture_url
-                            ? user.profile_picture_url
-                            : DEFAULT_AVATAR
-                    }
+                    avatar={user.img_url ? user.img_url : DEFAULT_AVATAR}
                     onClick={onAvatarClick}
                 />
             </header>

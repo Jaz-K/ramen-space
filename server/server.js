@@ -12,7 +12,7 @@ const { PORT = 3001, AWS_BUCKET, SESSION_SECRET } = process.env;
 
 const cookieSession = require("cookie-session");
 
-const { createUser, login, getUserById, updateAvatar } = require ("../db")
+const { createUser, login, getUserById, updateAvatar } = require("../db");
 //middleware
 
 const diskStorage = multer.diskStorage({
@@ -33,7 +33,6 @@ const uploader = multer({
     },
 });
 
-
 app.use(
     cookieSession({
         secret: SESSION_SECRET,
@@ -47,58 +46,48 @@ app.use(express.static(path.join(__dirname, "..", "client", "public")));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+app.get("/api/user/me", async (req, res) => {
+    if (!req.session.user_id) {
+        res.json(null);
+        return;
+    }
+    const loggedUser = await getUserById(req.session.user_id);
+    const first_name = loggedUser.first_name;
+    const last_name = loggedUser.last_name;
+    const img_url = loggedUser.img_url;
 
-app.get("/api/user/me", async (req, res)=>{
-     if(!req.session.user_id){
-        res.json(null)
-        return
-    } 
-    const loggedUser = await getUserById(req.session.user_id)
-    const first_name = loggedUser.first_name
-    const last_name = loggedUser.last_name
-    const profile_picture_url = loggedUser.profile_picture_url
+    res.json({ first_name, last_name, img_url });
+});
 
-    res.json({first_name, last_name,profile_picture_url});
-
-})
-
-
-app.post("/api/users", async (req, res)=>{
-        console.log("req.body", req.body)
+app.post("/api/users", async (req, res) => {
+    console.log("req.body", req.body);
     try {
-
-    const newUser = await createUser(req.body)
-    req.session.user_id = newUser.id
-    res.json({success: true})
+        const newUser = await createUser(req.body);
+        req.session.user_id = newUser.id;
+        res.json({ success: true });
     } catch (error) {
-        console.log("POST users", error)
-        res
-        .status(500)
-        .json({error: "Something is really wrong"})
+        console.log("POST users", error);
+        res.status(500).json({ error: "Something is really wrong" });
     }
+});
 
-})
-
-app.post("/api/login", async (req,res)=>{
+app.post("/api/login", async (req, res) => {
     try {
-    // console.log("req.body", req.body)
-    const user = await login(req.body)
-    if(!user){
-        res
-        .status(401)
-        .json({error: "Email or Password are not correct"})
-        return
-    }
-    req.session.user_id = user.id
-    res.json({success: true})
+        // console.log("req.body", req.body)
+        const user = await login(req.body);
+        if (!user) {
+            res.status(401).json({
+                error: "Email or Password are not correct",
+            });
+            return;
+        }
+        req.session.user_id = user.id;
+        res.json({ success: true });
     } catch (error) {
-        console.log("POST login", error)
-        res
-        .status(500)
-        .json({error: "Something is really wrong"})
+        console.log("POST login", error);
+        res.status(500).json({ error: "Something is really wrong" });
     }
-
-} )
+});
 
 // app.post("/api/users/profile_picture", (req,res)=>{
 
@@ -106,11 +95,10 @@ app.post("/api/login", async (req,res)=>{
 //         console.log(req.body);
 //         console.log(req.session.user_id);
 // /*     try {
-        
+
 //     } catch (error) {
 //         console.log("something went wrong", error)
 //     } */
-
 
 // })
 
@@ -119,22 +107,23 @@ app.post(
     uploader.single("avatar"),
     s3upload,
     async (req, res) => {
-        console.log(req.file.filename);
-        console.log(req.body);
-        console.log(req.session.user_id);
-        const id = req.session.user_id
-        const url = `https://s3.amazonaws.com/${AWS_BUCKET}/${req.file.filename}`;
-        const avatar = await updateAvatar({ url, id });
+        console.log("req.file", req.file);
+        console.log("session", req.session);
+        const id = req.session.user_id;
+        const img = `https://s3.amazonaws.com/${AWS_BUCKET}/${req.file.filename}`;
+        const avatar = await updateAvatar({ img, id });
+
+        console.log("avatar", avatar);
 
         if (req.file) {
             res.json(avatar);
         } else {
-            res.json({success: false});
+            res.json({ success: false });
         }
     }
 );
 
-/////// 
+///////
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
