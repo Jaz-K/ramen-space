@@ -1,10 +1,10 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const compression = require("compression");
 const path = require("path");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
-require("dotenv").config();
 
 const { s3upload } = require("../s3");
 
@@ -100,17 +100,19 @@ app.post("/api/login", async (req,res)=>{
 
 } )
 
-/* app.post("/api/users/profile_picture", (req,res)=>{
-    try {
-        console.log(req.file.filename);
-        console.log(req.body);
-        console.log(req.session.user_id);
-    } catch (error) {
-        console.log("something went wrong", error)
-    }
+// app.post("/api/users/profile_picture", (req,res)=>{
+
+//     // console.log(req.file.filename);
+//         console.log(req.body);
+//         console.log(req.session.user_id);
+// /*     try {
+        
+//     } catch (error) {
+//         console.log("something went wrong", error)
+//     } */
 
 
-}) */
+// })
 
 app.post(
     "/api/users/profile_picture",

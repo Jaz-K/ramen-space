@@ -45,9 +45,15 @@ section.modal{
     top: calc(50% - 300px);
     left: calc(50% - 300px);
 }
+section.modal form{
+    width: 100%;
+}
 
 h1{
     font-size: 3rem;
+}
+h2{
+    font-size: 2.5rem;
 }
 
 form{

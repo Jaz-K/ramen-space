@@ -2,22 +2,30 @@ import { useState } from "react"
 
 export default function Modal({ onClose, onUpload }){
     const [image, setimage] = useState ("")
+    console.log("image", image)
 
         async function avatarUpload(event){
-        event.preventDefault()
-        
-        const formData = new FormData();
-        formData.append = ("profile_picture_url", image)
-        console.log("image", image)
-        console.log("formData", formData)
+
+            try {
+                event.preventDefault()
+            console.log("inside function")
+            const formData = new FormData();
+            formData.append = ("avatar", image)
+            console.log("image inside", image)
+            console.log("formData", formData)
 
             const response = await fetch("/api/users/profile_picture", {
                 method: "POST",
                 body: formData,
             });
+            console.log("response", response);
             const newAvatar = await response.json();
             
             onUpload(newAvatar)
+            } catch (error) {
+                console.log("error", error)
+            }
+            
     }
 
 
@@ -30,8 +38,8 @@ export default function Modal({ onClose, onUpload }){
     return(
         <section className="modal">
             <button onClick={onClose}>x</button>
-            <h1>Upload New Avatar</h1>
-            
+            <h2>Upload New Avatar</h2>
+            <img src={image.name} alt={image.name}/>
             <form onSubmit={avatarUpload} >
                 <label htmlFor="avatar"></label>
                 <input type="file" id="avatar" accept="image/*" name="avatar" onChange={handleChange}/>
