@@ -117,9 +117,20 @@ app.post(
     }
 );
 
-app.post("/api/users/bio", (req, res) => {
-    console.log("something happens here");
-    console.log(updateBio);
+app.post("/api/users/bio", async (req, res) => {
+    try {
+        console.log("something happens here");
+        // console.log(updateBio);
+        console.log("req.body", req.body.bio);
+        console.log("user id", req.session.user_id);
+        const id = req.session.user_id;
+        const bio = req.body.bio;
+        const newBio = await updateBio({ bio, id });
+        res.json(newBio);
+        console.log("new Bio", newBio);
+    } catch (error) {
+        console.log("Something went wrong", error);
+    }
 });
 
 ///////

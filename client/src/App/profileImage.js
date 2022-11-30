@@ -7,7 +7,7 @@ export default function ProfileImage({
     return (
         <img
             onClick={onClick}
-            className="logo"
+            className="logo circle"
             src={avatar}
             alt={`${first_name} ${last_name}`}
         />

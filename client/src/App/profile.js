@@ -10,7 +10,7 @@ export default function Profile({
     return (
         <section className="profile">
             <img
-                className="user_img"
+                className="user_img circle"
                 src={img_url}
                 alt={`${first_name} ${last_name}`}
             />

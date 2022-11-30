@@ -32,7 +32,8 @@ export default function App() {
         setModal(false);
     }
 
-    function onBioUpdate() {
+    function onBioUpdate(bio) {
+        setUser({ ...user, bio });
         console.log("bioupdate");
     }
 

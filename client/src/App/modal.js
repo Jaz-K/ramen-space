@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function Modal({ onClose, onUpload }) {
-    const [image, setimage] = useState("");
+    const [image, setImage] = useState("");
     console.log("image", image);
 
     async function avatarUpload(event) {
@@ -24,7 +24,7 @@ export default function Modal({ onClose, onUpload }) {
 
     function handleChange(event) {
         const imageUrl = event.target.files[0];
-        setimage(imageUrl);
+        setImage(imageUrl);
     }
 
     return (

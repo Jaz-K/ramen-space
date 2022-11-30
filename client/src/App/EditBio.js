@@ -2,21 +2,42 @@ import { useState } from "react";
 
 export default function EditBio({ bio, onBioUpdate }) {
     const [editBio, setEditBio] = useState(false);
+    const [newBioEntry, setNewBioEntry] = useState("");
 
     function onEditButtonClick() {
         console.log("edit button click");
         setEditBio(!editBio);
     }
-    function onSubmit(event) {
+    async function onSubmit(event) {
+        // const newBio = event.target.bio.defaultValue;
+        console.log("newBio", newBioEntry);
         event.preventDefault();
-        // console.log("submit is clicked");
-        onBioUpdate();
+
+        const response = await fetch("/api/users/bio", {
+            method: "POST",
+            body: JSON.stringify({ bio: newBioEntry }),
+            headers: { "Content-Type": "application/json" },
+        });
+        const data = await response.json();
+        console.log("response", data);
+
+        setEditBio(false);
+        onBioUpdate(data.bio);
+    }
+
+    function handleChange(event) {
+        const newBioText = event.target.value;
+        setNewBioEntry(newBioText);
     }
 
     function renderForm() {
         return (
             <form onSubmit={onSubmit}>
-                <textarea name="bio" defaultValue={bio}></textarea>
+                <textarea
+                    name="bio"
+                    defaultValue={bio}
+                    onChange={handleChange}
+                ></textarea>
                 <button>Save Bio</button>
             </form>
         );
@@ -26,9 +47,8 @@ export default function EditBio({ bio, onBioUpdate }) {
 
     return (
         <>
-            {editBio && <h2>I am here</h2>}
-            <p>{bio}</p>
-            {renderForm()}
+            {editBio ? renderForm() : <p>{bio}</p>}
+            {/* <button onClick={onEditButtonClick}>Testbutton</button> */}
             <button onClick={onEditButtonClick}>{buttonText}</button>
         </>
     );
