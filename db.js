@@ -108,9 +108,9 @@ async function lastThreeUsers() {
 async function searchUsers(val) {
     const result = await db.query(
         `
-        SELECT first_name
+        SELECT id, first_name, last_name, img_url
         FROM users
-        WHERE first_name 
+        WHERE first_name
         ILIKE $1
         `,
         [val + "%"]

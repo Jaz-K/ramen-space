@@ -18,8 +18,8 @@ const {
     getUserById,
     updateAvatar,
     updateBio,
-    // searchUsers,
-    // lastThreeUsers,
+    searchUsers,
+    lastThreeUsers,
 } = require("../db");
 //middleware
 
@@ -120,10 +120,6 @@ app.post(
 
 app.post("/api/users/bio", async (req, res) => {
     try {
-        // console.log("something happens here");
-        // console.log(updateBio);
-        // console.log("req.body", req.body.bio);
-        // console.log("user id", req.session.user_id);
         const id = req.session.user_id;
         const bio = req.body.bio;
         const newBio = await updateBio({ bio, id });
@@ -134,20 +130,24 @@ app.post("/api/users/bio", async (req, res) => {
     }
 });
 
-app.post("/api/users-search", async (req, res) => {
+app.get("/api/users-search", async (req, res) => {
     console.log("********* /api/users-search ***********");
     console.log("req.query: ", req.query);
-
-    /*  try {
-        if (!req.query) {
+    const { q } = req.query;
+    console.log("query", q);
+    try {
+        if (!q) {
             const threeUsers = await lastThreeUsers();
             console.log("three users", threeUsers);
             res.json(threeUsers);
+            return;
         }
+        const users = await searchUsers(q);
+        res.json(users);
     } catch (error) {
-        console.log("ERROR api/users", error);
+        console.log("ERROR api/users-search", error);
         res.json({ success: false });
-    } */
+    }
 });
 
 //LOGOUT
