@@ -47,26 +47,27 @@ export default function App() {
         <BrowserRouter>
             <header>
                 <img className="logo" src="/logo.svg" alt="logo" />
-                <Link to="/users">Find Users</Link>
-                <a href="/">Logout</a>
-                <ProfileImage
-                    first_name={user.first_name}
-                    last_name={user.last_name}
-                    avatar={user.img_url ? user.img_url : DEFAULT_AVATAR}
-                    onClick={onAvatarClick}
-                />
+
+                <nav>
+                    <Link to="/">Home</Link>
+                    <Link to="/users">Find Users</Link>
+                    <a href="/logout">Logout</a>
+                    <ProfileImage
+                        first_name={user.first_name}
+                        last_name={user.last_name}
+                        avatar={user.img_url ? user.img_url : DEFAULT_AVATAR}
+                        onClick={onAvatarClick}
+                    />
+                    {modal && (
+                        <Modal onClose={onModalClose} onUpload={onUpload} />
+                    )}
+                </nav>
             </header>
             <Routes>
                 <Route
                     path="/"
                     element={
                         <>
-                            {modal && (
-                                <Modal
-                                    onClose={onModalClose}
-                                    onUpload={onUpload}
-                                />
-                            )}
                             <Profile
                                 first_name={user.first_name}
                                 last_name={user.last_name}

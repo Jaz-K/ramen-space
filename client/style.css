@@ -111,3 +111,16 @@ textarea {
     height: fit-content;
     margin-bottom: 2rem;
 }
+
+ul {
+    display: grid;
+    grid-template-columns: repeat(3, 20rem);
+}
+li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+li img {
+    width: 15rem;
+}

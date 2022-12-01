@@ -152,6 +152,10 @@ app.get("/api/users-search", async (req, res) => {
 
 //LOGOUT
 
+app.get("/logout", (req, res) => {
+    (req.session = null), res.redirect("/");
+});
+
 ///////
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
