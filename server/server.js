@@ -18,6 +18,8 @@ const {
     getUserById,
     updateAvatar,
     updateBio,
+    // searchUsers,
+    // lastThreeUsers,
 } = require("../db");
 //middleware
 
@@ -80,7 +82,6 @@ app.post("/api/users", async (req, res) => {
 
 app.post("/api/login", async (req, res) => {
     try {
-        // console.log("req.body", req.body)
         const user = await login(req.body);
         if (!user) {
             res.status(401).json({
@@ -119,19 +120,37 @@ app.post(
 
 app.post("/api/users/bio", async (req, res) => {
     try {
-        console.log("something happens here");
+        // console.log("something happens here");
         // console.log(updateBio);
-        console.log("req.body", req.body.bio);
-        console.log("user id", req.session.user_id);
+        // console.log("req.body", req.body.bio);
+        // console.log("user id", req.session.user_id);
         const id = req.session.user_id;
         const bio = req.body.bio;
         const newBio = await updateBio({ bio, id });
         res.json(newBio);
-        console.log("new Bio", newBio);
     } catch (error) {
+        // res.json(error); // need testing it
         console.log("Something went wrong", error);
     }
 });
+
+app.post("/api/users-search", async (req, res) => {
+    console.log("********* /api/users-search ***********");
+    console.log("req.query: ", req.query);
+
+    /*  try {
+        if (!req.query) {
+            const threeUsers = await lastThreeUsers();
+            console.log("three users", threeUsers);
+            res.json(threeUsers);
+        }
+    } catch (error) {
+        console.log("ERROR api/users", error);
+        res.json({ success: false });
+    } */
+});
+
+//LOGOUT
 
 ///////
 app.get("*", function (req, res) {

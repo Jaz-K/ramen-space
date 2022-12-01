@@ -67,7 +67,6 @@ async function getUserById(id) {
 
 //UPDATE USER IMG
 
-// !!!! returning
 async function updateAvatar({ img, id }) {
     const result = await db.query(
         `
@@ -80,7 +79,7 @@ async function updateAvatar({ img, id }) {
     );
     return result.rows[0];
 }
-
+//Update BIO
 async function updateBio({ bio, id }) {
     const result = await db.query(
         `
@@ -93,6 +92,31 @@ async function updateBio({ bio, id }) {
     );
     return result.rows[0];
 }
+// GET LAST 3 USERS
+async function lastThreeUsers() {
+    const result = await db.query(
+        `
+        SELECT * FROM users
+        ORDER BY id
+        DESC LIMIT 3
+        `
+    );
+    return result.rows;
+}
+
+// SEARCH USER
+async function searchUsers(val) {
+    const result = await db.query(
+        `
+        SELECT first_name
+        FROM users
+        WHERE first_name 
+        ILIKE $1
+        `,
+        [val + "%"]
+    );
+    return result.rows;
+}
 
 module.exports = {
     createUser,
@@ -100,4 +124,6 @@ module.exports = {
     getUserById,
     updateAvatar,
     updateBio,
+    searchUsers,
+    lastThreeUsers,
 };

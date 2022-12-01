@@ -10,3 +10,4 @@ CREATE TABLE users (
     bio TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+

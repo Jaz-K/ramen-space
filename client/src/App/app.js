@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import ProfileImage from "./profileImage";
 import Modal from "./modal";
 import Profile from "./profile";
+import FindUsers from "./find-users";
 
 export default function App() {
     const DEFAULT_AVATAR = "/avatar.svg";
@@ -42,9 +44,11 @@ export default function App() {
     }
 
     return (
-        <section>
+        <BrowserRouter>
             <header>
                 <img className="logo" src="/logo.svg" alt="logo" />
+                <Link to="/users">Find Users</Link>
+                <a href="/">Logout</a>
                 <ProfileImage
                     first_name={user.first_name}
                     last_name={user.last_name}
@@ -52,14 +56,31 @@ export default function App() {
                     onClick={onAvatarClick}
                 />
             </header>
-            {modal && <Modal onClose={onModalClose} onUpload={onUpload} />}
-            <Profile
-                first_name={user.first_name}
-                last_name={user.last_name}
-                img_url={user.img_url ? user.img_url : DEFAULT_AVATAR}
-                bio={user.bio}
-                onBioUpdate={onBioUpdate}
-            />
-        </section>
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <>
+                            {modal && (
+                                <Modal
+                                    onClose={onModalClose}
+                                    onUpload={onUpload}
+                                />
+                            )}
+                            <Profile
+                                first_name={user.first_name}
+                                last_name={user.last_name}
+                                img_url={
+                                    user.img_url ? user.img_url : DEFAULT_AVATAR
+                                }
+                                bio={user.bio}
+                                onBioUpdate={onBioUpdate}
+                            />
+                        </>
+                    }
+                />
+                <Route path="/users" element={<FindUsers />} />
+            </Routes>
+        </BrowserRouter>
     );
 }

@@ -5,12 +5,9 @@ export default function EditBio({ bio, onBioUpdate }) {
     const [newBioEntry, setNewBioEntry] = useState("");
 
     function onEditButtonClick() {
-        console.log("edit button click");
         setEditBio(!editBio);
     }
     async function onSubmit(event) {
-        // const newBio = event.target.bio.defaultValue;
-        console.log("newBio", newBioEntry);
         event.preventDefault();
 
         const response = await fetch("/api/users/bio", {
@@ -19,7 +16,6 @@ export default function EditBio({ bio, onBioUpdate }) {
             headers: { "Content-Type": "application/json" },
         });
         const data = await response.json();
-        console.log("response", data);
 
         setEditBio(false);
         onBioUpdate(data.bio);
@@ -43,13 +39,18 @@ export default function EditBio({ bio, onBioUpdate }) {
         );
     }
 
-    const buttonText = editBio ? "Cancel" : "Edit Bio";
+    const buttonStartBio = editBio ? "Cancel" : "Start Your Bio";
+    const buttonEditBio = editBio ? "Cancel" : "Edit Bio";
 
     return (
         <>
-            {editBio ? renderForm() : <p>{bio}</p>}
-            {/* <button onClick={onEditButtonClick}>Testbutton</button> */}
-            <button onClick={onEditButtonClick}>{buttonText}</button>
+            {editBio ? renderForm() : <p className="bioText">{bio}</p>}
+            {!bio && (
+                <button onClick={onEditButtonClick}>{buttonStartBio}</button>
+            )}
+            {bio && (
+                <button onClick={onEditButtonClick}>{buttonEditBio}</button>
+            )}
         </>
     );
 }
