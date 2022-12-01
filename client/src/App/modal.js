@@ -25,14 +25,25 @@ export default function Modal({ onClose, onUpload }) {
     function handleChange(event) {
         const imageUrl = event.target.files[0];
         setImage(imageUrl);
+        //creates preview in modal
+        preview.src = URL.createObjectURL(event.target.files[0]);
     }
 
     return (
         <section className="modal">
-            <button onClick={onClose}>x</button>
+            <button onClick={onClose} className="closeButton">
+                ✖
+            </button>
             <h2>Upload New Avatar</h2>
-            <img src={image.name} alt={image.name} />
             <form onSubmit={avatarUpload}>
+                <img
+                    className="circle imgPreview"
+                    id="preview"
+                    src="https://reverseimage.net/assets/images/npa2.jpg"
+                    alt={image.name}
+                    onError="this.style.display='none'"
+                />
+
                 <label htmlFor="avatar"></label>
                 <input
                     type="file"

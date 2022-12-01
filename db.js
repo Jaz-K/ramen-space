@@ -113,7 +113,7 @@ async function searchUsers(val) {
         WHERE first_name
         ILIKE $1
         `,
-        [val + "%"]
+        ["%" + val + "%"]
     );
     return result.rows;
 }

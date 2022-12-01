@@ -17,7 +17,7 @@ main {
     flex-direction: column;
     align-items: center;
     flex: 1;
-    padding: 0.5rem 1.5rem;
+    padding: 1.5rem 1.5rem;
 }
 section header {
     width: 1000px;
@@ -28,6 +28,13 @@ header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 3rem;
+    border-bottom: 1px solid #000;
+    padding-bottom: 1rem;
+}
+nav.menu {
+    display: flex;
+    align-items: center;
+    column-gap: 2rem;
 }
 
 section.welcome {
@@ -44,8 +51,8 @@ section.modal {
     background-color: bisque;
     padding: 3rem;
     z-index: 1;
-    height: 500px;
-    width: 500px;
+    /* height: 500px;
+    width: 500px; */
     position: fixed;
     top: calc(50% - 300px);
     left: calc(50% - 300px);
@@ -55,9 +62,22 @@ section.modal {
 section.modal form {
     width: 100%;
 }
+.imgPreview {
+    display: inline;
+    width: 400px;
+    height: 400px;
+    background-image: url("https://reverseimage.net/assets/images/npa2.jpg");
+    background-size: cover;
+    margin-bottom: 1rem;
+    -webkit-box-shadow: inset 0px 0px 15px -1px rgba(0, 0, 0, 0.54);
+    box-shadow: inset 0px 0px 15px -1px rgba(0, 0, 0, 0.54);
+}
 
 section.profile {
-    display: flex;
+    display: grid;
+    grid-template-columns: 30% 60%;
+    column-gap: 5%;
+    width: 100%;
 }
 
 h1 {
@@ -84,15 +104,15 @@ form label {
 }
 
 .logo {
-    width: 100px;
+    width: 3.75rem;
 }
 .error {
     color: red;
 }
 img.user_img {
-    width: 300px;
-    height: 300px;
-    margin-right: 2rem;
+    width: 100%;
+    /* height: 300px; */
+    /* margin-right: 2rem; */
 }
 .circle {
     aspect-ratio: 1/1;
@@ -115,6 +135,7 @@ textarea {
 ul {
     display: grid;
     grid-template-columns: repeat(3, 20rem);
+    grid-template-rows: auto;
 }
 li {
     display: flex;
@@ -122,5 +143,16 @@ li {
     align-items: center;
 }
 li img {
-    width: 15rem;
+    width: 13rem;
+    margin-bottom: 1rem;
+}
+.closeButton {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.49);
+    color: #fff;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: inherit;
 }

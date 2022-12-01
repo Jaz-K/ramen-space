@@ -46,9 +46,11 @@ export default function App() {
     return (
         <BrowserRouter>
             <header>
-                <img className="logo" src="/logo.svg" alt="logo" />
+                <Link to="/">
+                    <img className="logo" src="/logo.svg" alt="logo" />
+                </Link>
 
-                <nav>
+                <nav className="menu">
                     <Link to="/">Home</Link>
                     <Link to="/users">Find Users</Link>
                     <a href="/logout">Logout</a>

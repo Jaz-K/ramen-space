@@ -2,17 +2,17 @@ import { useState } from "react";
 
 export default function EditBio({ bio, onBioUpdate }) {
     const [editBio, setEditBio] = useState(false);
-    const [newBioEntry, setNewBioEntry] = useState("");
 
     function onEditButtonClick() {
         setEditBio(!editBio);
     }
     async function onSubmit(event) {
+        const newBio = event.target.bio.value;
         event.preventDefault();
 
         const response = await fetch("/api/users/bio", {
             method: "POST",
-            body: JSON.stringify({ bio: newBioEntry }),
+            body: JSON.stringify({ bio: newBio }),
             headers: { "Content-Type": "application/json" },
         });
         const data = await response.json();
@@ -21,18 +21,13 @@ export default function EditBio({ bio, onBioUpdate }) {
         onBioUpdate(data.bio);
     }
 
-    function handleChange(event) {
-        const newBioText = event.target.value;
-        setNewBioEntry(newBioText);
-    }
-
     function renderForm() {
         return (
             <form onSubmit={onSubmit}>
                 <textarea
                     name="bio"
                     defaultValue={bio}
-                    onChange={handleChange}
+                    // onChange={handleChange}
                 ></textarea>
                 <button>Save Bio</button>
             </form>
