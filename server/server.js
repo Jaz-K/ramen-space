@@ -162,8 +162,6 @@ app.get("/api/users/:otherUserId", async (req, res) => {
     } else {
         res.json(otherUser);
     }
-
-    // console.log("Other user id Server makes something");
 });
 
 //LOGOUT
