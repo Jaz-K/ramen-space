@@ -34,14 +34,14 @@ export default function Login() {
     return (
         <section onSubmit={onSubmit}>
             <form className="register">
-                <label htmlFor="email">
-                    Email
+                <div className="form-input">
+                    <label htmlFor="email">Email</label>
                     <input type="text" name="email" required />
-                </label>
-                <label htmlFor="password">
-                    Password
+                </div>
+                <div className="form-input">
+                    <label htmlFor="password">Password</label>
                     <input type="password" name="password" required />
-                </label>
+                </div>
                 <button>Login</button>
                 {error && <p className="error">{error}</p>}
             </form>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function FIndUser() {
     const [users, setUsers] = useState([]);
@@ -28,12 +29,14 @@ export default function FIndUser() {
             <ul>
                 {users.map((user) => (
                     <li key={user.id}>
-                        <img
-                            className="circle "
-                            src={user.img_url}
-                            alt={`${user.first_name} ${user.last_name}`}
-                        />
-                        {user.first_name} {user.last_name}
+                        <Link to={`/users/${user.id}`}>
+                            <img
+                                className="circle "
+                                src={user.img_url}
+                                alt={`${user.first_name} ${user.last_name}`}
+                            />
+                            {user.first_name} {user.last_name}
+                        </Link>
                     </li>
                 ))}
             </ul>

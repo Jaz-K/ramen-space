@@ -23,6 +23,7 @@ export default function Modal({ onClose, onUpload }) {
     }
 
     function handleChange(event) {
+        const preview = document.getElementById(preview);
         const imageUrl = event.target.files[0];
         setImage(imageUrl);
         //creates preview in modal

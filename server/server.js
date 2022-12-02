@@ -149,6 +149,15 @@ app.get("/api/users-search", async (req, res) => {
         res.json({ success: false });
     }
 });
+// OTHERT USERS
+
+app.get("/api/users/:otherUserId", async (req, res) => {
+    // console.log("req.params", req.params);
+    const { otherUserId } = req.params;
+    const otherUser = await getUserById(otherUserId);
+    res.json(otherUser);
+    // console.log("Other user id Server makes something");
+});
 
 //LOGOUT
 

@@ -117,6 +117,7 @@ async function searchUsers(val) {
     );
     return result.rows;
 }
+//
 
 module.exports = {
     createUser,

@@ -34,28 +34,28 @@ export default function Register() {
     }
     return (
         <section>
-            <form onSubmit={onSubmit} className="register">
-                <label htmlFor="fname">
-                    First Name
+            <form onSubmit={onSubmit} className="register" autoComplete="off">
+                <div className="form-input">
+                    <label htmlFor="fname">First Name</label>
                     <input type="text" name="first_name" id="fname" required />
-                </label>
-                <label htmlFor="lname">
-                    Last Name
+                </div>
+                <div>
+                    <label htmlFor="lname">Last Name</label>
                     <input type="text" name="last_name" id="lname" required />
-                </label>
-                <label htmlFor="email">
-                    Email
+                </div>
+                <div>
+                    <label htmlFor="email">Email</label>
                     <input type="email" name="email" id="email" required />
-                </label>
-                <label htmlFor="password">
-                    Password
+                </div>
+                <div>
+                    <label htmlFor="password">Password</label>
                     <input
                         type="password"
                         name="password"
                         id="password"
                         required
                     />
-                </label>
+                </div>
                 <button type="Submit">Register</button>
                 {error && <p className="error">{error}</p>}
             </form>

@@ -5,6 +5,7 @@ import ProfileImage from "./profileImage";
 import Modal from "./modal";
 import Profile from "./profile";
 import FindUsers from "./find-users";
+import OtherProfile from "./otherProfile";
 
 export default function App() {
     const DEFAULT_AVATAR = "/avatar.svg";
@@ -83,6 +84,7 @@ export default function App() {
                     }
                 />
                 <Route path="/users" element={<FindUsers />} />
+                <Route path="/users/:otherUserId" element={<OtherProfile />} />
             </Routes>
         </BrowserRouter>
     );
