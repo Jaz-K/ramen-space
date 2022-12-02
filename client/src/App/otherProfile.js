@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function OtherProfile() {
     const [otherUser, setOtherUser] = useState({});
     const { otherUserId } = useParams();
+    const navigate = useNavigate();
+
     useEffect(() => {
         console.log("useEffect is running");
         async function getUser() {
@@ -12,6 +14,10 @@ export default function OtherProfile() {
             const data = await response.json();
             setOtherUser(data);
             console.log("data", data);
+
+            if (!data) {
+                navigate("/", { replace: true });
+            }
         }
         getUser();
     }, []);

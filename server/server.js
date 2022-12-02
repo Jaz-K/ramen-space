@@ -154,8 +154,15 @@ app.get("/api/users-search", async (req, res) => {
 app.get("/api/users/:otherUserId", async (req, res) => {
     // console.log("req.params", req.params);
     const { otherUserId } = req.params;
+    const { user_id } = req.session;
     const otherUser = await getUserById(otherUserId);
-    res.json(otherUser);
+    if (otherUserId == user_id || !otherUser) {
+        res.json(null);
+        return;
+    } else {
+        res.json(otherUser);
+    }
+
     // console.log("Other user id Server makes something");
 });
 
