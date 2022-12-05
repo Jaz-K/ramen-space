@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS friendships;
 DROP TABLE IF EXISTS users CASCADE;
 
 CREATE TABLE users (
@@ -11,3 +12,10 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE friendships(
+    id SERIAL PRIMARY KEY,
+    sender_id INT REFERENCES users(id) NOT NULL,
+    recipient_id INT REFERENCES users(id) NOT NULL,
+    accepted BOOLEAN DEFAULT false,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

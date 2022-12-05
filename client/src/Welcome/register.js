@@ -34,32 +34,39 @@ export default function Register() {
     }
     return (
         <section>
-            <form onSubmit={onSubmit} className="register" autoComplete="off">
+            <form onSubmit={onSubmit} className="register formStyle">
                 <div className="form-input">
-                    <label htmlFor="fname">First Name</label>
                     <input type="text" name="first_name" id="fname" required />
+                    <label htmlFor="fname">First Name</label>
                 </div>
-                <div>
-                    <label htmlFor="lname">Last Name</label>
+                <div className="form-input">
                     <input type="text" name="last_name" id="lname" required />
+                    <label htmlFor="lname">Last Name</label>
                 </div>
-                <div>
+                <div className="form-input">
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        required
+                        autoComplete="do-not-autofill"
+                    />
                     <label htmlFor="email">Email</label>
-                    <input type="email" name="email" id="email" required />
                 </div>
-                <div>
-                    <label htmlFor="password">Password</label>
+                <div className="form-input">
                     <input
                         type="password"
                         name="password"
                         id="password"
                         required
+                        autoComplete="do-not-autofill"
                     />
+                    <label htmlFor="password">Password</label>
                 </div>
                 <button type="Submit">Register</button>
+                <Link to="/login">Click here to Login</Link>
                 {error && <p className="error">{error}</p>}
             </form>
-            <Link to="/login">Click here to Login</Link>
         </section>
     );
 }

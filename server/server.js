@@ -20,6 +20,10 @@ const {
     updateBio,
     searchUsers,
     lastThreeUsers,
+    getFriendship,
+    // requestFriendship,
+    // acceptFriendship,
+    // deleteFriendship,
 } = require("../db");
 //middleware
 
@@ -60,10 +64,12 @@ app.get("/api/user/me", async (req, res) => {
         return;
     }
     const loggedUser = await getUserById(req.session.user_id);
-    const first_name = loggedUser.first_name;
-    const last_name = loggedUser.last_name;
-    const img_url = loggedUser.img_url;
-    const bio = loggedUser.bio;
+
+    const { first_name, last_name, img_url, bio } = loggedUser;
+    // const first_name = loggedUser.first_name;
+    // const last_name = loggedUser.last_name;
+    // const img_url = loggedUser.img_url;
+    // const bio = loggedUser.bio;
 
     res.json({ first_name, last_name, img_url, bio });
 });
@@ -75,7 +81,7 @@ app.post("/api/users", async (req, res) => {
         req.session.user_id = newUser.id;
         res.json({ success: true });
     } catch (error) {
-        console.log("POST users", error);
+        console.log("POST /users", error);
         res.status(500).json({ error: "Something is really wrong" });
     }
 });
@@ -93,7 +99,7 @@ app.post("/api/login", async (req, res) => {
         res.json({ success: true });
     } catch (error) {
         console.log("POST login", error);
-        res.status(500).json({ error: "Something is really wrong" });
+        res.status(500).json({ error: "Something went really wrong" });
     }
 });
 
@@ -131,14 +137,10 @@ app.post("/api/users/bio", async (req, res) => {
 });
 
 app.get("/api/users-search", async (req, res) => {
-    console.log("********* /api/users-search ***********");
-    console.log("req.query: ", req.query);
     const { q } = req.query;
-    console.log("query", q);
     try {
         if (!q) {
             const threeUsers = await lastThreeUsers();
-            console.log("three users", threeUsers);
             res.json(threeUsers);
             return;
         }
@@ -152,10 +154,10 @@ app.get("/api/users-search", async (req, res) => {
 // OTHERT USERS
 
 app.get("/api/users/:otherUserId", async (req, res) => {
-    // console.log("req.params", req.params);
     const { otherUserId } = req.params;
     const { user_id } = req.session;
     const otherUser = await getUserById(otherUserId);
+    // console.log("/api/users/:otherUserId", otherUserId);
     if (otherUserId == user_id || !otherUser) {
         res.json(null);
         return;
@@ -164,7 +166,40 @@ app.get("/api/users/:otherUserId", async (req, res) => {
     }
 });
 
-//LOGOUT
+// FRIENDREQUEST
+
+function getFriendshipStatus(response, user_id) {
+    if (!response) {
+        return "NO_FRIENDSHIP";
+    }
+    if (!response.accepted && response.sender_id === user_id) {
+        return "OUTGOING_FRIENDSHIP";
+    }
+    if (!response.accepted && response.recipient_id === user_id) {
+        return "INCOMING_FRIENDSHIP";
+    }
+    if (response.accepted) {
+        return "ACCEPTED_FRIENDSHIP";
+    }
+}
+
+app.get("/api/friendships/:user_id", async (req, res) => {
+    const otherUserId = req.params.user_id;
+    const loggedUser = req.session.user_id;
+
+    const response = await getFriendship(loggedUser, otherUserId);
+    const status = await getFriendshipStatus(response, loggedUser);
+
+    res.json(status);
+});
+
+//FRIEND POST REQUEST
+
+app.post("/api/friendships/:user_id", (req, res) => {
+    console.log("POST ");
+});
+
+// LOGOUT
 
 app.get("/logout", (req, res) => {
     (req.session = null), res.redirect("/");

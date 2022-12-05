@@ -1,0 +1,15 @@
+@font-face {
+    font-family: "japanese_2020italic";
+    src: url("./japanese_2020_italic-webfont.woff2") format("woff2"),
+        url("./japanese_2020_italic-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "japanese_2020regular";
+    src: url("./japanese_2020-webfont.woff2") format("woff2"),
+        url("./japanese_2020-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}

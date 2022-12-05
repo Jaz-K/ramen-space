@@ -110,7 +110,7 @@ async function searchUsers(val) {
         `
         SELECT id, first_name, last_name, img_url
         FROM users
-        WHERE first_name
+        WHERE first_name || last_name
         ILIKE $1
         `,
         ["%" + val + "%"]
@@ -118,6 +118,58 @@ async function searchUsers(val) {
     return result.rows;
 }
 //
+
+// CHECK FRIENDSHIP
+async function getFriendship(sender_id, recipient_id) {
+    const result = await db.query(
+        `
+        SELECT sender_id, recipient_id, accepted FROM friendships
+        WHERE sender_id = $1 AND recipient_id = $2
+        OR    sender_id = $2 AND recipient_id = $1
+    `,
+        [sender_id, +recipient_id]
+    );
+    return result.rows[0];
+}
+
+// INSERT FRIENDSHIP REQUEST
+async function requestFriendship({ sender_id, recipient_id }) {
+    const result = await db.query(
+        `
+    INSERT INTO friendships(sender_id, recipient_id)
+    VALUES ($1,$2)
+    `,
+        [sender_id, recipient_id]
+    );
+    return result.rows[0];
+}
+
+// UPDATE FRIENDSHIP REQUEST
+async function acceptFriendship({ sender_id, recipient_id }) {
+    const result = await db.query(
+        `
+    UPDATE friendships 
+    SET accepted = true
+    WHERE sender_id = $1 
+    AND recipient_id = $2
+    RETURNING *`,
+        [sender_id, recipient_id]
+    );
+    return result.rows[0];
+}
+
+// DELETE FRIENDSHIP
+async function deleteFriendship({ sender_id, recipient_id }) {
+    const result = await db.query(
+        `
+    DELETE FROM friendships
+    WHERE sender_id = $1 AND recipient_id = $2
+    OR  sender_id = $2 AND recipient_id = $1
+    `,
+        [sender_id, recipient_id]
+    );
+    return result.rows[0];
+}
 
 module.exports = {
     createUser,
@@ -127,4 +179,8 @@ module.exports = {
     updateBio,
     searchUsers,
     lastThreeUsers,
+    getFriendship,
+    requestFriendship,
+    acceptFriendship,
+    deleteFriendship,
 };

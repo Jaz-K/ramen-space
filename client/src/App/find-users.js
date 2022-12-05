@@ -20,7 +20,7 @@ export default function FIndUser() {
         setQuery(event.target.value);
     }
     return (
-        <>
+        <section>
             <h1>Find users</h1>
             <input type="text" placeholder="search user" onChange={onChange} />
 
@@ -40,6 +40,6 @@ export default function FIndUser() {
                     </li>
                 ))}
             </ul>
-        </>
+        </section>
     );
 }

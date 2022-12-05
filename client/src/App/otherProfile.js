@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import FriendButton from "./friendButton";
 
 export default function OtherProfile() {
     const [otherUser, setOtherUser] = useState({});
@@ -10,10 +11,8 @@ export default function OtherProfile() {
         console.log("useEffect is running");
         async function getUser() {
             const response = await fetch(`/api/users/${otherUserId}`);
-            console.log("response", response);
             const data = await response.json();
             setOtherUser(data);
-            console.log("data", data);
 
             if (!data) {
                 navigate("/", { replace: true });
@@ -23,11 +22,15 @@ export default function OtherProfile() {
     }, []);
     return (
         <section className="profile">
-            <img
-                className="user_img circle"
-                src={otherUser.img_url}
-                alt={`${otherUser.first_name} $otherUser.last_name}`}
-            />
+            <section>
+                <img
+                    className="user_img circle"
+                    src={otherUser.img_url}
+                    alt={`${otherUser.first_name} ${otherUser.last_name}`}
+                />
+                <FriendButton user_id={otherUserId} />
+            </section>
+
             <section>
                 <h2>
                     {otherUser.first_name} {otherUser.last_name}

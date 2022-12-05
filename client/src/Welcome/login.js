@@ -32,20 +32,20 @@ export default function Login() {
     }
 
     return (
-        <section onSubmit={onSubmit}>
-            <form className="register">
+        <section>
+            <form className="register formStyle" onSubmit={onSubmit}>
                 <div className="form-input">
-                    <label htmlFor="email">Email</label>
                     <input type="text" name="email" required />
+                    <label htmlFor="email">Email</label>
                 </div>
                 <div className="form-input">
-                    <label htmlFor="password">Password</label>
                     <input type="password" name="password" required />
+                    <label htmlFor="password">Password</label>
                 </div>
                 <button>Login</button>
                 {error && <p className="error">{error}</p>}
+                <Link to="/">Click here to Register</Link>
             </form>
-            <Link to="/">Click here to Register</Link>
         </section>
     );
 }

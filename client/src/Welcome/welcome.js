@@ -5,8 +5,8 @@ import Login from "./login";
 export default function Welcome() {
     return (
         <section className="welcome">
-            <h1>Welcome to my Flauschnet</h1>
-            <img className="logo" src="/logo.svg" alt="logo" />
+            <h1>Ramen Society</h1>
+            <img className="logo" src="/logo_ramen.svg" alt="logo" />
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Register />} />
