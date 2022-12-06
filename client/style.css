@@ -63,12 +63,17 @@ button.classic:disabled {
 /* HEADER */
 header {
     width: 100%;
-    display: flex;
-    justify-content: space-between;
+
     margin-bottom: 3rem;
     border-bottom: 1px solid #000;
     padding: 1.5rem;
     background-color: #fff;
+}
+header div {
+    max-width: 78.125rem;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
 }
 nav.menu {
     display: flex;
@@ -152,6 +157,11 @@ section.profile {
     column-gap: 5%;
     width: 100%;
     max-width: 78.125rem;
+    padding: 0 1.5rem;
+}
+section.profile button.classic {
+    margin: 0.5rem 0;
+    width: fit-content;
 }
 
 img.user_img {
@@ -167,12 +177,17 @@ img.user_img {
     margin-bottom: 2rem;
 }
 
+form.bio {
+    max-width: 100%;
+    background: none;
+    margin-bottom: 0;
+}
 textarea {
     font-size: inherit;
     font-family: inherit;
     width: 100%;
     height: fit-content;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 /* --- FIND USER ---- */
@@ -180,10 +195,12 @@ textarea {
 section.findUser {
     width: 100%;
     max-width: 78.125rem;
+    padding: 0 1.5rem;
 }
 ul {
     display: grid;
-    grid-template-columns: repeat(3, 20rem);
+    /* grid-template-columns: repeat(3, 20rem); */
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
     grid-template-rows: auto;
     list-style-type: none;
 }
@@ -192,7 +209,15 @@ li a {
     flex-direction: column;
     align-items: center;
     margin-bottom: 3rem;
+    color: inherit;
+    text-decoration: none;
+    font-size: 1.25rem;
 }
+
+li a:hover {
+    text-decoration: wavy;
+}
+
 li img {
     width: 13rem;
     margin-bottom: 1rem;
@@ -214,6 +239,9 @@ form {
     border-radius: 2rem;
 }
 
+form .classic {
+    width: 100%;
+}
 form a,
 form a:visited {
     text-decoration: transparent;
@@ -304,4 +332,11 @@ footer {
     background-color: #fff;
     width: 100%;
     text-align: center;
+}
+
+@media screen and (max-width: 992px) {
+}
+@media screen and (max-width: 768px) {
+}
+@media screen and (max-width: 576px) {
 }

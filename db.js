@@ -93,12 +93,12 @@ async function updateBio({ bio, id }) {
     return result.rows[0];
 }
 // GET LAST 3 USERS
-async function lastThreeUsers() {
+async function lastNewUsers() {
     const result = await db.query(
         `
         SELECT * FROM users
         ORDER BY id
-        DESC LIMIT 3
+        DESC LIMIT 4
         `
     );
     return result.rows;
@@ -178,7 +178,7 @@ module.exports = {
     updateAvatar,
     updateBio,
     searchUsers,
-    lastThreeUsers,
+    lastNewUsers,
     getFriendship,
     requestFriendship,
     acceptFriendship,

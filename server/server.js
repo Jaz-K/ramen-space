@@ -19,7 +19,7 @@ const {
     updateAvatar,
     updateBio,
     searchUsers,
-    lastThreeUsers,
+    lastNewUsers,
     getFriendship,
     requestFriendship,
     acceptFriendship,
@@ -140,7 +140,7 @@ app.get("/api/users-search", async (req, res) => {
     const { q } = req.query;
     try {
         if (!q) {
-            const threeUsers = await lastThreeUsers();
+            const threeUsers = await lastNewUsers();
             res.json(threeUsers);
             return;
         }

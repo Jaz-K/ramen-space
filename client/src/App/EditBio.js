@@ -23,12 +23,8 @@ export default function EditBio({ bio, onBioUpdate }) {
 
     function renderForm() {
         return (
-            <form onSubmit={onSubmit}>
-                <textarea
-                    name="bio"
-                    defaultValue={bio}
-                    // onChange={handleChange}
-                ></textarea>
+            <form onSubmit={onSubmit} className="bio">
+                <textarea name="bio" defaultValue={bio}></textarea>
                 <button className="classic">Save Bio</button>
             </form>
         );

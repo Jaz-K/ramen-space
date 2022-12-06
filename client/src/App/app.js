@@ -48,30 +48,36 @@ export default function App() {
         <>
             <BrowserRouter>
                 <header>
-                    <Link to="/">
-                        <img
-                            className="logo"
-                            src="/logo_ramen.svg"
-                            alt="logo"
-                        />
-                    </Link>
+                    <div>
+                        <Link to="/">
+                            <img
+                                className="logo"
+                                src="/logo_ramen.svg"
+                                alt="logo"
+                            />
+                        </Link>
 
-                    <nav className="menu">
-                        <Link to="/">Home</Link>
-                        <Link to="/users">Find Users</Link>
-                        <a href="/logout">Logout</a>
-                        <ProfileImage
-                            first_name={user.first_name}
-                            last_name={user.last_name}
-                            avatar={
-                                user.img_url ? user.img_url : DEFAULT_AVATAR
-                            }
-                            onClick={onAvatarClick}
-                        />
-                        {modal && (
-                            <Modal onClose={onModalClose} onUpload={onUpload} />
-                        )}
-                    </nav>
+                        <nav className="menu">
+                            <Link to="/">Home</Link>
+                            <Link to="/friends">Friends</Link>
+                            <Link to="/users">Find Users</Link>
+                            <a href="/logout">Logout</a>
+                            <ProfileImage
+                                first_name={user.first_name}
+                                last_name={user.last_name}
+                                avatar={
+                                    user.img_url ? user.img_url : DEFAULT_AVATAR
+                                }
+                                onClick={onAvatarClick}
+                            />
+                            {modal && (
+                                <Modal
+                                    onClose={onModalClose}
+                                    onUpload={onUpload}
+                                />
+                            )}
+                        </nav>
+                    </div>
                 </header>
                 <Routes>
                     <Route
