@@ -21,9 +21,9 @@ const {
     searchUsers,
     lastThreeUsers,
     getFriendship,
-    // requestFriendship,
-    // acceptFriendship,
-    // deleteFriendship,
+    requestFriendship,
+    acceptFriendship,
+    deleteFriendship,
 } = require("../db");
 //middleware
 
@@ -195,8 +195,56 @@ app.get("/api/friendships/:user_id", async (req, res) => {
 
 //FRIEND POST REQUEST
 
-app.post("/api/friendships/:user_id", (req, res) => {
-    console.log("POST ");
+app.post("/api/friendships/:user_id", async (req, res) => {
+    const otherUserId = req.params.user_id;
+    const loggedUser = req.session.user_id;
+
+    const response = await getFriendship(loggedUser, otherUserId);
+    const status = getFriendshipStatus(response, loggedUser);
+    console.log("POST response ", status);
+
+    let newStatus;
+
+    if (status === "NO_FRIENDSHIP") {
+        await requestFriendship({
+            sender_id: loggedUser,
+            recipient_id: otherUserId,
+        });
+        newStatus = "OUTGOING_FRIENDSHIP";
+    }
+
+    if (status === "INCOMING_FRIENDSHIP") {
+        await acceptFriendship({
+            sender_id: loggedUser,
+            recipient_id: otherUserId,
+        });
+        newStatus = "ACCEPTED_FRIENDSHIP";
+    }
+
+    if (status === "ACCEPTED_FRIENDSHIP") {
+        await deleteFriendship({
+            sender_id: otherUserId,
+            recipient_id: loggedUser,
+        });
+        newStatus = "NO_FRIENDSHIP";
+    }
+    res.json(newStatus);
+});
+
+app.post("/api/rejectfriendships/:user_id", async (req, res) => {
+    const otherUserId = req.params.user_id;
+    const loggedUser = req.session.user_id;
+
+    const response = await getFriendship(loggedUser, otherUserId);
+    const status = getFriendshipStatus(response, loggedUser);
+    console.log("POST response ", status);
+
+    await deleteFriendship({
+        sender_id: otherUserId,
+        recipient_id: loggedUser,
+    });
+    let newStatus = "NO_FRIENDSHIP";
+    res.json(newStatus);
 });
 
 // LOGOUT

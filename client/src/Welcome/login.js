@@ -42,7 +42,7 @@ export default function Login() {
                     <input type="password" name="password" required />
                     <label htmlFor="password">Password</label>
                 </div>
-                <button>Login</button>
+                <button className="classic">Login</button>
                 {error && <p className="error">{error}</p>}
                 <Link to="/">Click here to Register</Link>
             </form>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import DeclineButton from "./declineButton";
 
 function getButtonLabel(status) {
     if (status === "NO_FRIENDSHIP") {
@@ -8,7 +9,7 @@ function getButtonLabel(status) {
         return "Request pending";
     }
     if (status === "INCOMING_FRIENDSHIP") {
-        return "Friend request ";
+        return "Accept request ";
     }
     if (status === "ACCEPTED_FRIENDSHIP") {
         return "Delete friend";
@@ -17,34 +18,43 @@ function getButtonLabel(status) {
 }
 
 export default function FriendButton({ user_id }) {
-    console.log("user_id friend button", user_id);
     const [status, setStatus] = useState(null);
 
     useEffect(() => {
         async function getFriendship() {
             const response = await fetch(`/api/friendships/${user_id}`);
             const friendship = await response.json();
-            console.log("friendship", friendship);
+            // console.log("friendship", friendship);
             setStatus(friendship);
         }
         getFriendship();
     }, [user_id]);
 
-    function onClick(event) {
+    async function onClick(event) {
         event.preventDefault();
-        // console.log("it clicks");
+        console.log("userid", user_id);
+        console.log("it clicks on friendship", status);
+        const response = await fetch(`/api/friendships/${user_id}`, {
+            method: "POST",
+        });
+        const friendship = await response.json();
+        setStatus(friendship);
     }
     //add a post request
 
     return (
         <>
             <button
-                className="friendshipButton"
+                className="friendshipButton classic"
                 onClick={onClick}
                 disabled={status === "OUTGOING_FRIENDSHIP"}
             >
                 {getButtonLabel(status)}
             </button>
+            {(status === "INCOMING_FRIENDSHIP" ||
+                status === "OUTGOING_FRIENDSHIP") && (
+                <DeclineButton setStatus={setStatus} user_id={user_id} />
+            )}
         </>
     );
 }

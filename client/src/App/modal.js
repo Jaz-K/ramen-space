@@ -53,7 +53,7 @@ export default function Modal({ onClose, onUpload }) {
                     name="avatar"
                     onChange={handleChange}
                 />
-                <button>Upload Avatar</button>
+                <button className="classic">Upload Avatar</button>
             </form>
         </section>
     );

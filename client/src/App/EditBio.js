@@ -29,7 +29,7 @@ export default function EditBio({ bio, onBioUpdate }) {
                     defaultValue={bio}
                     // onChange={handleChange}
                 ></textarea>
-                <button>Save Bio</button>
+                <button className="classic">Save Bio</button>
             </form>
         );
     }
@@ -41,10 +41,14 @@ export default function EditBio({ bio, onBioUpdate }) {
         <>
             {editBio ? renderForm() : <p className="bioText">{bio}</p>}
             {!bio && (
-                <button onClick={onEditButtonClick}>{buttonStartBio}</button>
+                <button className="classic" onClick={onEditButtonClick}>
+                    {buttonStartBio}
+                </button>
             )}
             {bio && (
-                <button onClick={onEditButtonClick}>{buttonEditBio}</button>
+                <button className="classic" onClick={onEditButtonClick}>
+                    {buttonEditBio}
+                </button>
             )}
         </>
     );

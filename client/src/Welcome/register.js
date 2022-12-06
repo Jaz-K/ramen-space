@@ -63,7 +63,9 @@ export default function Register() {
                     />
                     <label htmlFor="password">Password</label>
                 </div>
-                <button type="Submit">Register</button>
+                <button type="Submit" className="classic">
+                    Register
+                </button>
                 <Link to="/login">Click here to Login</Link>
                 {error && <p className="error">{error}</p>}
             </form>
