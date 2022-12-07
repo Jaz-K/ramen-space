@@ -24,6 +24,7 @@ const {
     requestFriendship,
     acceptFriendship,
     deleteFriendship,
+    getFriendships,
 } = require("../db");
 //middleware
 
@@ -215,8 +216,8 @@ app.post("/api/friendships/:user_id", async (req, res) => {
 
     if (status === "INCOMING_FRIENDSHIP") {
         await acceptFriendship({
-            sender_id: loggedUser,
-            recipient_id: otherUserId,
+            sender_id: otherUserId,
+            recipient_id: loggedUser,
         });
         newStatus = "ACCEPTED_FRIENDSHIP";
     }
@@ -245,6 +246,22 @@ app.post("/api/rejectfriendships/:user_id", async (req, res) => {
     });
     let newStatus = "NO_FRIENDSHIP";
     res.json(newStatus);
+});
+
+// GET FRIENDSHIPS
+
+app.get("/api/friendships", async (req, res) => {
+    console.log("GET friendships reacts");
+    const loggedUser = req.session.user_id;
+    const friendships = await getFriendships(loggedUser);
+    console.log("GET friendship response", friendships);
+    res.json(
+        friendships.map((friendship) => ({
+            ...friendship,
+            status: getFriendshipStatus(friendship, loggedUser),
+        }))
+    );
+    // req.json({ success: true });
 });
 
 // LOGOUT

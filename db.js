@@ -92,7 +92,7 @@ async function updateBio({ bio, id }) {
     );
     return result.rows[0];
 }
-// GET LAST 3 USERS
+// GET LAST 4 USERS
 async function lastNewUsers() {
     const result = await db.query(
         `
@@ -171,6 +171,25 @@ async function deleteFriendship({ sender_id, recipient_id }) {
     return result.rows[0];
 }
 
+// GET FRIENDSHIPS
+
+async function getFriendships(user_id) {
+    const result = await db.query(
+        `
+        SELECT friendships.accepted,
+        friendships.sender_id,
+        friendships.recipient_id,
+        users.id AS user_id,
+        users.first_name, users.last_name, users.img_url
+        FROM friendships JOIN users
+        ON (users.id = friendships.sender_id AND friendships.recipient_id = $1)
+        OR (users.id = friendships.recipient_id AND friendships.sender_id = $1 AND accepted = true)
+    `,
+        [user_id]
+    );
+    return result.rows;
+}
+
 module.exports = {
     createUser,
     login,
@@ -183,4 +202,5 @@ module.exports = {
     requestFriendship,
     acceptFriendship,
     deleteFriendship,
+    getFriendships,
 };
