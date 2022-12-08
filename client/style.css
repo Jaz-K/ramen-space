@@ -84,7 +84,8 @@ section {
     display: flex;
     flex-direction: column;
     flex: 1;
-    /* align-items: center; */
+    padding: 0 1.5rem;
+    width: 78.125rem;
 }
 
 nav.menu a {
@@ -195,11 +196,9 @@ textarea {
 section.findUser {
     width: 100%;
     max-width: 78.125rem;
-    padding: 0 1.5rem;
 }
-ul {
+.findUser ul {
     display: grid;
-    /* grid-template-columns: repeat(3, 20rem); */
     grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
     grid-template-rows: auto;
     list-style-type: none;
@@ -218,11 +217,39 @@ li a:hover {
     text-decoration: wavy;
 }
 
-li img {
+.findUser li img {
     width: 13rem;
     margin-bottom: 1rem;
 }
+/*  --- FRIENDS --- */
+ul.userView {
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+    column-gap: 2rem;
+    margin-bottom: 2rem;
+}
 
+.userView a {
+    margin-bottom: 1rem;
+}
+
+.userView li {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    background-color: rgb(212, 212, 212);
+    border-radius: 1rem;
+    text-align: center;
+}
+.userView li img {
+    display: inline-block;
+    width: 10rem;
+}
+
+.userView li button {
+    margin-top: 1rem;
+}
 /* --- FORM --- */
 
 form {
@@ -310,14 +337,14 @@ input:valid {
     border-bottom: 2px solid #1fb8c0;
 }
 
-/* input:invalid {
+input:invalid {
     color: #c01f52;
     border-bottom: 2px solid #c01f52;
 }
 
 input:invalid + label {
     color: #c01f52;
-} */
+}
 
 .logo {
     width: 3.75rem;

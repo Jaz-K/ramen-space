@@ -21,12 +21,14 @@ export default function Friends() {
             });
             const friendship = await response.json();
             console.log("friendship", friendship);
-
-            const newFriends = friendships.map((user) =>
-                user.accepted === true ? user : {}
+            //______________________
+            const friends = friendships.map((user) =>
+                user.user_id === id
+                    ? { ...user, accepted: true, status: friendship }
+                    : user
             );
-            console.log("new Friends", newFriends);
-
+            console.log("Friends", friends);
+            const newFriends = [...friends];
             setFriendships(newFriends);
         }
 
@@ -46,9 +48,9 @@ export default function Friends() {
     return (
         <section>
             <h2>Friends</h2>
-            <ul>
+            <ul className="userView">
                 {friendships.map((friendship) =>
-                    friendship.status === "ACCEPTED_FRIENDSHIP" ? (
+                    friendship.accepted === true ? (
                         <li key={friendship.user_id}>
                             <UserView
                                 {...friendship}
@@ -61,9 +63,12 @@ export default function Friends() {
             </ul>
 
             <h2>Wannabes</h2>
-            <ul>
+            {friendships.accepted == true && !friendships.accepted == false && (
+                <p>nothing here</p>
+            )}
+            <ul className="userView">
                 {friendships.map((friendship) =>
-                    friendship.status === "INCOMING_FRIENDSHIP" ? (
+                    friendship.accepted === false ? (
                         <li key={friendship.user_id}>
                             <UserView
                                 {...friendship}
