@@ -33,6 +33,8 @@ const {
     acceptFriendship,
     deleteFriendship,
     getFriendships,
+    getChatMessages,
+    setChatMessages,
 } = require("../db");
 //middleware
 
@@ -318,16 +320,54 @@ server.listen(PORT, function () {
 
 // ----- SOCET IO
 
-io.on("connection", function (socket) {
+io.on("connection", async (socket) => {
+    console.log("[social:socket] incoming socked connection", socket.id);
+    console.log("session", socket.request.session);
+    const { user_id } = socket.request.session;
+    if (!user_id) {
+        return socket.disconnect(true);
+    }
+
+    // socket.emit("thanks", {
+    //     message: "😀😎💻🐱‍👤",
+    // });
+
+    const chatMessages = await getChatMessages();
+    console.log("chat Messages", chatMessages);
+
+    socket.emit("chat", chatMessages);
+
+    socket.on("newMessage", async function ({ message }) {
+        // console.log(user_id, message);
+        const sender_id = user_id;
+        const chatData = await setChatMessages({ sender_id, message });
+        const { first_name, last_name, img_url } = await getUserById(sender_id);
+        const newChatObj = {
+            ...chatData,
+            first_name,
+            last_name,
+            img_url,
+            sender_id,
+            message,
+        };
+        console.log("chatData", chatData);
+        console.log("userData", newChatObj);
+        io.emit("newMessage", newChatObj);
+    });
+
+    console.log("user_id in socket", user_id);
+});
+
+/* io.on("connection", function (socket) {
     console.log(`socket with the id ${socket.id} is now connected`);
 
-    // if (!socket.request.session.userId) {
-    //     return socket.disconnect(true);
-    // }
+    if (!socket.request.session.user_id) {
+        return socket.disconnect(true);
+    }
 
-    // const userId = socket.request.session.userId;
+    const userId = socket.request.session.userId;
 
-    // console.log("userId", userId);
+    console.log("userId", userId);
 
     socket.on("disconnect", function () {
         console.log(`socket with the id ${socket.id} is now disconnected`);
@@ -341,3 +381,4 @@ io.on("connection", function (socket) {
         message: "Welome. It is nice to see you",
     });
 });
+ */

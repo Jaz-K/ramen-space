@@ -190,6 +190,28 @@ async function getFriendships(user_id) {
     return result.rows;
 }
 
+async function getChatMessages() {
+    const result = await db.query(`
+        SELECT chat.id, chat.sender_id, chat.message, chat.created_at,
+        users.first_name, users.last_name, users.img_url
+        FROM chat JOIN users
+        ON (users.id = chat.sender_id)
+    `);
+    return result.rows;
+}
+
+async function setChatMessages({ sender_id, message }) {
+    const result = await db.query(
+        `
+    INSERT INTO chat(sender_id, message)
+    VALUES ($1,$2)
+    RETURNING id, created_at
+    `,
+        [sender_id, message]
+    );
+    return result.rows[0];
+}
+
 module.exports = {
     createUser,
     login,
@@ -203,4 +225,6 @@ module.exports = {
     acceptFriendship,
     deleteFriendship,
     getFriendships,
+    getChatMessages,
+    setChatMessages,
 };

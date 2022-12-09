@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 // import UserView from "./userView";
 
 export default function MyFriends({ default_img, user_id }) {
@@ -15,10 +15,6 @@ export default function MyFriends({ default_img, user_id }) {
             const data = await response.json();
             console.log("data from friendships", data);
             setFriends(data);
-
-            /* if (!data) {
-                navigate("/", { replace: true });
-            } */
         }
         getFriendships();
     }, [user_id]);

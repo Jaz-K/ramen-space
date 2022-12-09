@@ -22,9 +22,6 @@ export default function OtherProfile({ default_avatar }) {
         getUser();
     }, [otherUserId]);
 
-    function handleFriendsClick() {
-        console.log("friends got clicked");
-    }
     return (
         <section className="profile">
             <section>
@@ -47,7 +44,6 @@ export default function OtherProfile({ default_avatar }) {
                 <YourFriends
                     user_id={otherUserId}
                     default_img={default_avatar}
-                    handleFriendsClick={handleFriendsClick}
                 />
             </section>
         </section>
