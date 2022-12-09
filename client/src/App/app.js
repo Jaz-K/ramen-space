@@ -7,6 +7,7 @@ import Profile from "./profile";
 import FindUsers from "./find-users";
 import OtherProfile from "./otherProfile";
 import Friends from "./friends";
+import Chat from "./chat";
 
 export default function App() {
     const DEFAULT_AVATAR = "/avatar.svg";
@@ -59,7 +60,7 @@ export default function App() {
                         </Link>
 
                         <nav className="menu">
-                            <Link to="/">Home</Link>
+                            <Link to="/chat">Chat</Link>
                             <Link to="/friends">Friends</Link>
                             <Link to="/users">Find Users</Link>
                             <a href="/logout">Logout</a>
@@ -99,11 +100,17 @@ export default function App() {
                             </>
                         }
                     />
+                    <Route path="/chat" element={<Chat />} />
                     <Route path="/friends" element={<Friends />} />
-                    <Route path="/users" element={<FindUsers />} />
+                    <Route
+                        path="/users"
+                        element={<FindUsers default_avatar={DEFAULT_AVATAR} />}
+                    />
                     <Route
                         path="/users/:otherUserId"
-                        element={<OtherProfile />}
+                        element={
+                            <OtherProfile default_avatar={DEFAULT_AVATAR} />
+                        }
                     />
                 </Routes>
             </BrowserRouter>

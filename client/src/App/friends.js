@@ -14,7 +14,7 @@ export default function Friends() {
         getFriendships();
     }, []);
 
-    async function onClick(id, action) {
+    async function onClick(id, action = "reject") {
         if (action === "accept") {
             const response = await fetch(`/api/friendships/${id}`, {
                 method: "POST",
@@ -32,7 +32,7 @@ export default function Friends() {
             setFriendships(newFriends);
         }
 
-        if (action === "delete") {
+        if (action === "reject") {
             const response = await fetch(`/api/rejectfriendships/${id}`, {
                 method: "POST",
             });
@@ -45,9 +45,26 @@ export default function Friends() {
         }
     }
 
+    function wannabeHeadline(friendships) {
+        const status = friendships.map((friendship) => friendship.status);
+        console.log("status", status);
+        if (status.includes("INCOMING_FRIENDSHIP")) {
+            return "Wannabe";
+        }
+    }
+    function friendsHeadline(friendships) {
+        const status = friendships.map((friendship) => friendship.status);
+        console.log("status", status);
+
+        if (!status.includes("ACCEPTED_FRIENDSHIP")) {
+            return "No friends yet";
+        }
+    }
+
     return (
         <section>
             <h2>Friends</h2>
+            <p>{friendsHeadline(friendships)}</p>
             <ul className="userView">
                 {friendships.map((friendship) =>
                     friendship.accepted === true ? (
@@ -55,17 +72,14 @@ export default function Friends() {
                             <UserView
                                 {...friendship}
                                 onClick={onClick}
-                                action="delete"
+                                action="reject"
                             />
                         </li>
                     ) : null
                 )}
             </ul>
 
-            <h2>Wannabes</h2>
-            {friendships.accepted == true && !friendships.accepted == false && (
-                <p>nothing here</p>
-            )}
+            <h2>{wannabeHeadline(friendships)}</h2>
             <ul className="userView">
                 {friendships.map((friendship) =>
                     friendship.accepted === false ? (
@@ -75,6 +89,12 @@ export default function Friends() {
                                 onClick={onClick}
                                 action="accept"
                             />
+                            <button
+                                action="delete"
+                                onClick={() => onClick(friendship.user_id)}
+                            >
+                                Reject Friendship
+                            </button>
                         </li>
                     ) : null
                 )}

@@ -38,6 +38,11 @@ main {
     height: 100vh;
 }
 
+section {
+    flex: 1;
+    padding: 0 1.5rem;
+    width: 78.125rem;
+}
 button.classic {
     margin: 1rem auto 1rem;
     display: inline;
@@ -60,7 +65,7 @@ button.classic:disabled {
     background-color: #d1bda4;
     color: rgb(126, 125, 125);
 }
-/* HEADER */
+/* --- HEADER --- */
 header {
     width: 100%;
 
@@ -80,12 +85,9 @@ nav.menu {
     align-items: center;
     column-gap: 2rem;
 }
-section {
+header section {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    padding: 0 1.5rem;
-    width: 78.125rem;
 }
 
 nav.menu a {
@@ -109,6 +111,7 @@ section.welcome {
 section.welcome .logo {
     width: 300px;
 }
+
 /* --- MODAL --- */
 
 .closeButton {
@@ -125,6 +128,7 @@ section.welcome .logo {
 section.modal {
     background-color: #fff;
     padding: 3rem;
+    width: fit-content;
     z-index: 1;
     position: fixed;
     top: calc(50% - 300px);
@@ -150,7 +154,7 @@ input[type="file"]:valid {
     box-shadow: inset 0px 0px 15px -1px rgba(0, 0, 0, 0.54);
 } */
 
-/* USER PROFILE */
+/* --- USER PROFILE --- */
 
 section.profile {
     display: grid;
@@ -159,6 +163,10 @@ section.profile {
     width: 100%;
     max-width: 78.125rem;
     padding: 0 1.5rem;
+}
+
+.profile section {
+    width: auto;
 }
 section.profile button.classic {
     margin: 0.5rem 0;

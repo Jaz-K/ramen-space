@@ -1,6 +1,14 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+// ------- socket
+const server = require("http").Server(app);
+const io = require("socket.io")(server, {
+    allowRequest: (req, callback) =>
+        callback(null, req.headers.referer.startsWith("http://localhost:3000")),
+});
+
+// ------- socket
 const compression = require("compression");
 const path = require("path");
 const multer = require("multer");
@@ -46,14 +54,27 @@ const uploader = multer({
     },
 });
 
-app.use(
+// --- SOCKET IO COOKIE SESSION
+const cookieSessionMiddleware = cookieSession({
+    secret: SESSION_SECRET,
+    maxAge: 1000 * 60 * 60 * 24 * 90,
+    sameSite: true,
+});
+
+app.use(cookieSessionMiddleware);
+io.use(function (socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
+// ----------------------
+
+/* app.use(
     cookieSession({
         secret: SESSION_SECRET,
         maxAge: 1000 * 60 * 60 * 24 * 14,
         sameSite: true,
     })
 ); // cookiesession
-
+ */
 app.use(compression());
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 app.use(express.urlencoded({ extended: false }));
@@ -264,6 +285,22 @@ app.get("/api/friendships", async (req, res) => {
     // req.json({ success: true });
 });
 
+// SEE OTHER FRIENDS
+
+app.get("/api/otherfriendships/:user_id", async (req, res) => {
+    console.log("GET friendships reacts");
+    const otherUser = req.params.user_id;
+    const friendships = await getFriendships(otherUser);
+    console.log("GET friendship response", friendships);
+    res.json(
+        friendships.map((friendship) => ({
+            ...friendship,
+            status: getFriendshipStatus(friendship, otherUser),
+        }))
+    );
+    // req.json({ success: true });
+});
+
 // LOGOUT
 
 app.get("/logout", (req, res) => {
@@ -275,6 +312,32 @@ app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
-app.listen(PORT, function () {
+server.listen(PORT, function () {
     console.log(`Express server listening on port ${PORT}`);
+});
+
+// ----- SOCET IO
+
+io.on("connection", function (socket) {
+    console.log(`socket with the id ${socket.id} is now connected`);
+
+    // if (!socket.request.session.userId) {
+    //     return socket.disconnect(true);
+    // }
+
+    // const userId = socket.request.session.userId;
+
+    // console.log("userId", userId);
+
+    socket.on("disconnect", function () {
+        console.log(`socket with the id ${socket.id} is now disconnected`);
+    });
+
+    socket.on("thanks", function (data) {
+        console.log(data);
+    });
+
+    socket.emit("welcome", {
+        message: "Welome. It is nice to see you",
+    });
 });

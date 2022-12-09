@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function FIndUser() {
+export default function FindUser({ default_avatar }) {
     const [users, setUsers] = useState([]);
     const [query, setQuery] = useState("");
 
@@ -13,8 +13,6 @@ export default function FIndUser() {
             setUsers(userData);
         })();
     }, [query]);
-
-    console.log("Users", users);
 
     function onChange(event) {
         setQuery(event.target.value);
@@ -32,7 +30,9 @@ export default function FIndUser() {
                         <Link to={`/users/${user.id}`}>
                             <img
                                 className="circle "
-                                src={user.img_url}
+                                src={
+                                    user.img_url ? user.img_url : default_avatar
+                                }
                                 alt={`${user.first_name} ${user.last_name}`}
                             />
                             {user.first_name} {user.last_name}

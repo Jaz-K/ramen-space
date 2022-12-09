@@ -33,7 +33,7 @@ export default function Register() {
         }
     }
     return (
-        <section>
+        <>
             <form onSubmit={onSubmit} className="register formStyle">
                 <div className="form-input">
                     <input type="text" name="first_name" id="fname" required />
@@ -69,6 +69,6 @@ export default function Register() {
                 <Link to="/login">Click here to Login</Link>
                 {error && <p className="error">{error}</p>}
             </form>
-        </section>
+        </>
     );
 }
