@@ -1,89 +1,134 @@
 import { useEffect, useState, useRef } from "react";
-import { io } from "socket.io-client";
-// import EmojiPicker from "emoji-picker-react";
 
-let socket;
+import EmojiPicker from "emoji-picker-react";
 
-// lazy initialise pattern!
-const connect = () => {
-    if (!socket) {
-        socket = io.connect();
-    }
-    return socket;
-};
+import { socket } from "../socket";
 
-const disconnect = () => {
-    socket.disconnect();
-    socket = null;
-};
+import { Link } from "react-router-dom";
+import { formatDistance } from "date-fns";
 
-export default function Chat() {
-    // const [chat, setChat] = useState("");
+export default function Chat({ user_id }) {
     const [chatMessage, setChatMessage] = useState([]);
+    const [toggleEmoji, setToggleEmoji] = useState(false);
+    const [messageString, setMessageString] = useState("");
     const listRef = useRef(null);
-    // console.log("chat", chat);
-    console.log("useeffect chat");
 
     useEffect(() => {
-        socket = connect();
-
+        socket.emit("openChat", "ping");
         socket.on("chat", function getMessages(data) {
-            // console.log("test messages", data);
+            console.log("data", data);
             setChatMessage(data);
         });
 
         socket.on("newMessage", (newMessage) => {
-            console.log("newMessage", newMessage);
             setChatMessage((chatMessage) => [...chatMessage, newMessage]);
         });
         return () => {
             console.log("chat cleanup");
-            disconnect();
+            socket.off("chat");
         };
     }, []);
 
     useEffect(() => {
-        // other use effect with scroll
         const recentMessage = listRef.current.lastChild;
         if (recentMessage) {
             recentMessage.scrollIntoView();
         }
-        console.log("recentMessage", recentMessage);
     }, [chatMessage]);
 
-    function hitEnter(event) {
-        if (event.key === "Enter") {
-            // console.log("Enter hits");
-            // console.log("textarea iput", event.target.value);
-            const newMessage = event.target.value;
+    function handleSubmit(event) {
+        if (event.key === "Enter" || event.type === "submit") {
+            const newMessage = messageString;
+            event.preventDefault();
             socket.emit("newMessage", { message: newMessage });
-
-            event.target.value = "";
+            setMessageString("");
         }
     }
 
+    function clickEmojiHandler() {
+        setToggleEmoji(!toggleEmoji);
+    }
+    function onEmojiClick(emojiObject) {
+        setMessageString(messageString + emojiObject.emoji);
+    }
+
+    function newDate(date) {
+        const newDate = formatDistance(new Date(date), new Date(), {
+            addSuffix: true,
+        });
+        return newDate;
+    }
+
+    //------------------------------------
     return (
         <section className="chat">
             <h2>Chat</h2>
 
             <ul ref={listRef}>
-                {chatMessage.map((message) => (
-                    <li key={message.id}>
-                        <p className="chatSender">
-                            {message.first_name} {message.last_name}
-                        </p>
-                        <div className="chatblock">
-                            <img
-                                src={message.img_url}
-                                className="chatAvatar circle"
-                            />
-                            <p className="chatMsg">{message.message}</p>
-                        </div>
-                    </li>
-                ))}
+                {chatMessage.map((message) =>
+                    message.sender_id === user_id ? (
+                        <li key={message.id} className="chatList">
+                            <div className="chatblock chatblockMe">
+                                <p className="chatMsg chatMsgMe">
+                                    {message.message}
+                                </p>
+                            </div>
+                            <p className="chatDateMe">
+                                {newDate(message.created_at)}
+                            </p>
+                        </li>
+                    ) : (
+                        <li key={message.id} className="chatList">
+                            <p className="chatSender">
+                                {message.first_name} {message.last_name}
+                            </p>
+                            <div className="chatblock">
+                                <Link to={`/users/${message.sender_id}`}>
+                                    <img
+                                        src={message.img_url}
+                                        className="chatAvatar circle"
+                                    />
+                                </Link>
+                                <p className="chatMsg chatMsgYou">
+                                    {message.message}
+                                </p>
+                            </div>
+                            <p className="chatDate">
+                                {newDate(message.created_at)}
+                            </p>
+                        </li>
+                    )
+                )}
             </ul>
-            {/* <EmojiPicker /> */}
-            <textarea onKeyDown={hitEnter}></textarea>
+
+            <form onSubmit={handleSubmit} className="chatInsertForm">
+                <textarea
+                    className="chatInsert"
+                    onKeyDown={handleSubmit}
+                    name="chatEntry"
+                    placeholder="write something"
+                    value={messageString}
+                    onChange={(event) => setMessageString(event.target.value)}
+                    onClick={() => setToggleEmoji(false)}
+                >
+                    {/* <Emoji unified="1f423" size="25" /> */}
+                </textarea>
+                <button type="submit">Send</button>
+                <button
+                    onClick={clickEmojiHandler}
+                    type="button"
+                    className="emojiButton"
+                >
+                    😊
+                </button>
+                {toggleEmoji && (
+                    <EmojiPicker
+                        width={320}
+                        onEmojiClick={onEmojiClick}
+                        // theme={Theme.AUTO}
+                    />
+                )}
+            </form>
         </section>
     );
 }

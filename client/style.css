@@ -6,9 +6,10 @@
     box-sizing: border-box;
 }
 body {
-    background-color: #fff;
+    background-image: url("/backgroundpattern.png");
+    background-repeat: repeat;
     height: 100vh;
-    background-color: rgb(238, 238, 238);
+    /* background-color: rgb(238, 238, 238); */
 }
 html {
     font-size: 16px;
@@ -41,7 +42,8 @@ main {
 section {
     flex: 1;
     padding: 0 1.5rem;
-    width: 78.125rem;
+    max-width: 78.125rem;
+    width: 100%;
 }
 button.classic {
     margin: 1rem auto 1rem;
@@ -66,25 +68,57 @@ button.classic:disabled {
     color: rgb(126, 125, 125);
 }
 /* --- HEADER --- */
+
+.shroud {
+    position: fixed;
+    background-color: rgb(0, 0, 0);
+    opacity: 0.3;
+    inset: 0;
+    transition: opacity 0.3s;
+    z-index: 1;
+}
+
+/*  */
 header {
     width: 100%;
-
     margin-bottom: 3rem;
     border-bottom: 1px solid #000;
     padding: 1.5rem;
     background-color: #fff;
+    position: relative;
 }
-header div {
+div.header {
     max-width: 78.125rem;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin: 0 auto;
 }
-nav.menu {
+
+.burerMenuIcon {
+    width: 35px;
+    height: 35px;
+    visibility: hidden;
+}
+.menuClose {
+    visibility: hidden;
+}
+
+.menu {
     display: flex;
     align-items: center;
     column-gap: 2rem;
 }
+.navUser,
+.navLinks {
+    display: flex;
+    align-items: center;
+}
+
+.navGap {
+    gap: 1rem;
+}
+
 header section {
     display: flex;
     flex-direction: column;
@@ -99,6 +133,25 @@ nav.menu a {
 
 nav.menu a:hover {
     text-decoration: underline;
+}
+.friendsLink {
+    position: relative;
+}
+
+.friendsIndicator {
+    width: fit-content;
+    height: 1.5rem;
+    text-align: center;
+    position: absolute;
+    background-color: #c01f52;
+    font-size: 0.75rem;
+    color: #fff;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    top: -1.25rem;
+    right: -1rem;
+    display: flex;
+    align-items: center;
 }
 
 /* --- WELCOME --- */
@@ -125,49 +178,74 @@ section.welcome .logo {
     font-size: inherit;
 }
 
-section.modal {
+.modal {
     background-color: #fff;
     padding: 3rem;
     width: fit-content;
+    height: fit-content;
     z-index: 1;
     position: fixed;
-    top: calc(50% - 300px);
-    left: calc(50% - 250px);
+    /* top: calc(50% - 10rem); */
+    /* top: calc(var(--variable-top) + 20px);
+    left: calc(50% - 250px); */
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     -webkit-box-shadow: 0px 0px 20px 9px rgba(0, 0, 0, 0.39);
     box-shadow: 0px 0px 20px 9px rgba(0, 0, 0, 0.25);
     border-radius: 2rem;
 }
-section.modal form {
+.modal form {
     width: 100%;
 }
 input[type="file"]:valid {
     border: none;
 }
-/* .imgPreview {
+.imgPreview {
     display: inline;
-    width: 400px;
-    height: 400px;
-    background-image: url("https://reverseimage.net/assets/images/npa2.jpg");
+    max-width: 400px;
+    max-height: 400px;
+    width: 100%;
+    height: 100%;
     background-size: cover;
     margin-bottom: 1rem;
     -webkit-box-shadow: inset 0px 0px 15px -1px rgba(0, 0, 0, 0.54);
     box-shadow: inset 0px 0px 15px -1px rgba(0, 0, 0, 0.54);
-} */
-
+}
+/* --- FRIENDS MODAL --- */
+.friendModal {
+    visibility: hidden;
+}
+.friendModal.active {
+    visibility: visible;
+}
 /* --- USER PROFILE --- */
 
 section.profile {
-    display: grid;
+    display: flex;
+    /* justify-content: center; */
+
+    /* display: grid;
     grid-template-columns: 30% 60%;
     column-gap: 5%;
     width: 100%;
     max-width: 78.125rem;
-    padding: 0 1.5rem;
+    padding: 0 1.5rem; */
 }
 
-.profile section {
+/* .profile section {
     width: auto;
+} */
+section.profileCard {
+    width: 40%;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 2rem;
+    text-align: center;
+    height: fit-content;
 }
+
 section.profile button.classic {
     margin: 0.5rem 0;
     width: fit-content;
@@ -184,6 +262,7 @@ img.user_img {
 
 .bioText {
     margin-bottom: 2rem;
+    white-space: pre-wrap;
 }
 
 form.bio {
@@ -198,6 +277,63 @@ textarea {
     height: fit-content;
     margin-bottom: 1rem;
 }
+section.messageWall {
+    padding: 0;
+}
+.messageWall div {
+    position: relative;
+    display: flex;
+    padding: 1rem;
+}
+.messageWall button {
+    width: fit-content;
+    padding: 0.25rem 1rem;
+}
+.wallImg {
+    width: 3rem;
+    height: 3rem;
+}
+.wallInsertForm {
+    width: 100%;
+    position: relative;
+}
+.wallInsert {
+    margin: 0 0 0 1rem;
+    height: fit-content;
+    resize: none;
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.wallList {
+    list-style: none;
+    background-color: #fff;
+    margin-bottom: 2rem;
+}
+.wallSenderBlock {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.wallDate {
+    font-size: 0.75rem;
+}
+.friendPreview {
+    list-style-type: none;
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.friendPreviewImg {
+    max-width: 4rem;
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 1rem;
+}
+.friendPreview li a {
+    margin: 0;
+}
 
 /* --- FIND USER ---- */
 
@@ -211,7 +347,7 @@ section.findUser {
     grid-template-rows: auto;
     list-style-type: none;
 }
-li a {
+.findUser li a {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -221,7 +357,7 @@ li a {
     font-size: 1.25rem;
 }
 
-li a:hover {
+.findUser li a:hover {
     text-decoration: wavy;
 }
 
@@ -234,7 +370,7 @@ ul.userView {
     display: flex;
     list-style: none;
     flex-wrap: wrap;
-    column-gap: 2rem;
+    gap: 2rem;
     margin-bottom: 2rem;
 }
 
@@ -253,11 +389,22 @@ ul.userView {
 .userView li img {
     display: inline-block;
     width: 10rem;
+    margin-bottom: 1rem;
 }
 
 .userView li button {
     margin-top: 1rem;
 }
+
+ul.wannebe {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+}
+
+.wannebe li {
+    flex: 0 0 auto;
+}
+
 /* --- FORM --- */
 
 form {
@@ -370,21 +517,75 @@ section.chat {
     height: 30rem;
     overflow: auto;
     background-color: #fff;
+    padding: 1rem;
+    list-style: none;
+    border-radius: 1rem 1rem 0 0;
 }
-.chatSender {
+li.chatList {
+    margin-top: 1rem;
+}
+
+li.chatList a {
+    margin-bottom: 0;
+}
+
+.chatSender,
+.chatDate {
     padding-left: 5rem;
     font-size: 0.75rem;
+}
+.chatMe,
+.chatDateMe {
+    font-size: 0.75rem;
+    padding-right: 1rem;
+    text-align: right;
 }
 .chatblock {
     display: flex;
     column-gap: 1rem;
 }
-.chatMsg {
+.chatblockMe {
+    justify-content: flex-end;
+}
+.chatMsgMe {
+    background-color: #86daf3;
+    white-space: pre-wrap;
+}
+.chatMsgYou {
     background-color: #f5d7b2;
+    white-space: pre-wrap;
+}
+.chatMsg {
     padding: 1rem;
     border-radius: 1rem;
-    margin-bottom: 0.75rem;
+    width: 100%;
+    height: 100%;
 }
+.chatInsert {
+    padding: 1rem;
+    border: 1px solid #f99b28;
+    resize: none;
+}
+.chatInsertForm {
+    position: relative;
+}
+.emojiButton {
+    display: inline;
+    position: absolute;
+    top: 2rem;
+    right: 1rem;
+    border: none;
+    background: transparent;
+    font-size: inherit;
+}
+textarea.chatInsert:focus-visible,
+textarea.chatInsert:visible,
+textarea.chatInsert:target {
+    outline-color: #86daf3;
+    border: 2px solid #86daf3;
+    background-color: #c01f52;
+}
+
 .chatAvatar {
     width: 3rem;
     height: 3rem;
@@ -401,6 +602,64 @@ footer {
 @media screen and (max-width: 992px) {
 }
 @media screen and (max-width: 768px) {
+    .modal {
+        width: 80%;
+    }
+    .menuClose {
+        visibility: visible;
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: #000;
+        background: transparent;
+    }
+    nav.menu {
+        flex-direction: column-reverse;
+        justify-content: flex-end;
+        position: fixed;
+        align-items: flex-start;
+        background-color: #fff;
+        padding: 2rem;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        transform: translateX(100%);
+        transition: transform 1s;
+        z-index: 2;
+    }
+    nav.active {
+        transform: translateX(0);
+    }
+    .navLogo {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .burerMenuIcon {
+        visibility: visible;
+    }
+    .navUser {
+        flex-direction: column-reverse;
+        margin-bottom: 2rem;
+    }
+    .navLinks {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .friendsIndicator {
+        top: 0;
+        right: -2rem;
+    }
+    .logout {
+        margin-top: 2rem;
+    }
 }
 @media screen and (max-width: 576px) {
+    section.profile {
+        flex-direction: column;
+    }
+    section.profileCard {
+        width: 100%;
+    }
 }

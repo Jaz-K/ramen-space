@@ -1,4 +1,6 @@
 import { createRoot } from "react-dom/client";
+import { connect } from "./socket";
+
 import Welcome from "./Welcome/welcome";
 import App from "./App/app";
 
@@ -10,17 +12,7 @@ fetch("/api/user/me")
             console.log("Data", data);
             root.render(<Welcome />);
         } else {
+            connect();
             root.render(<App />);
         }
     });
-
-//<img className="logo" src="/logo.svg" alt="logo" />
-
-/*  .then(data => 
-       {
-        if (!data.user_id) {
-             console.log("Data", data)
-            root.render(<Welcome />);
-        } else {
-            root.render(<App/>);
-        } */

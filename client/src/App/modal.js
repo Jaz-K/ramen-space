@@ -1,8 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function Modal({ onClose, onUpload }) {
+export default function Modal({ onClose, onUpload, user_img }) {
     const [image, setImage] = useState("");
-    console.log("image", image);
+    const [imgPreview, setImagePreview] = useState();
+    const DEFAULT_AVATAR = "/avatar.svg";
+
+    useEffect(() => {
+        console.log("userImage", user_img);
+        if (user_img) {
+            setImagePreview(user_img);
+        } else {
+            setImagePreview(DEFAULT_AVATAR);
+        }
+    }, []);
 
     async function avatarUpload(event) {
         try {
@@ -27,7 +37,7 @@ export default function Modal({ onClose, onUpload }) {
         const imageUrl = event.target.files[0];
         setImage(imageUrl);
         //creates preview in modal
-        // preview.src = URL.createObjectURL(event.target.files[0]);
+        setImagePreview(URL.createObjectURL(event.target.files[0]));
     }
 
     return (
@@ -37,13 +47,14 @@ export default function Modal({ onClose, onUpload }) {
             </button>
             <h2>Upload New Avatar</h2>
             <form onSubmit={avatarUpload}>
-                {/* <img
-                    className="circle imgPreview"
-                    id="preview"
-                    src=""
-                    alt={image.name}
-                    onError="this.style.display='none'"
-                /> */}
+                {
+                    <img
+                        className="circle imgPreview"
+                        id="preview"
+                        src={imgPreview}
+                        alt={image.name}
+                    />
+                }
 
                 <label htmlFor="avatar"></label>
                 <input

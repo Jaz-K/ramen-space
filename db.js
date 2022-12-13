@@ -184,7 +184,8 @@ async function getFriendships(user_id) {
         FROM friendships JOIN users
         ON (users.id = friendships.sender_id AND friendships.recipient_id = $1)
         OR (users.id = friendships.recipient_id AND friendships.sender_id = $1 AND accepted = true)
-    `,
+
+        `,
         [user_id]
     );
     return result.rows;
@@ -196,9 +197,18 @@ async function getChatMessages() {
         users.first_name, users.last_name, users.img_url
         FROM chat JOIN users
         ON (users.id = chat.sender_id)
+        LIMIT 20
     `);
     return result.rows;
 }
+
+// async function getUsersByArray(id) {
+//     console.log("ID", id);
+//     const result = db.query(`SELECT * FROM users WHERE id IN $1`, [id]);
+//     return result.rows;
+// }
+// LIMIT 20
+// limiting the chat entries??  ORDER BY id  DESC LIMIT 20
 
 async function setChatMessages({ sender_id, message }) {
     const result = await db.query(
@@ -212,6 +222,37 @@ async function setChatMessages({ sender_id, message }) {
     return result.rows[0];
 }
 
+// ADD PRIVATE MESSAGES
+
+async function getWallMessages(recipient_id) {
+    const result = await db.query(
+        `
+        SELECT directmessage.id, directmessage.sender_id,directmessage.recipient_id, directmessage.directmessage, directmessage.created_at,
+        users.first_name, users.last_name, users.img_url
+        FROM directmessage JOIN users
+        ON (users.id = directmessage.sender_id)
+        WHERE recipient_id  = $1
+        ORDER BY directmessage.id DESC
+        
+    `,
+        [recipient_id]
+    );
+    return result.rows;
+}
+
+async function setWallMessages({ sender_id, recipient_id, directmessage }) {
+    const result = await db.query(
+        `
+    INSERT INTO directmessage (sender_id, recipient_id, directmessage)
+    VALUES ($1,$2,$3)
+    RETURNING *
+    `,
+        [sender_id, recipient_id, directmessage]
+    );
+    return result.rows[0];
+}
+
+// async function getMualfriends({loggedUser, therUser}){}
 module.exports = {
     createUser,
     login,
@@ -227,4 +268,7 @@ module.exports = {
     getFriendships,
     getChatMessages,
     setChatMessages,
+    getWallMessages,
+    setWallMessages,
+    // getUsersByArray,
 };

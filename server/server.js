@@ -35,6 +35,9 @@ const {
     getFriendships,
     getChatMessages,
     setChatMessages,
+    getWallMessages,
+    setWallMessages,
+    // getUsersByArray,
 } = require("../db");
 //middleware
 
@@ -89,13 +92,9 @@ app.get("/api/user/me", async (req, res) => {
     }
     const loggedUser = await getUserById(req.session.user_id);
 
-    const { first_name, last_name, img_url, bio } = loggedUser;
-    // const first_name = loggedUser.first_name;
-    // const last_name = loggedUser.last_name;
-    // const img_url = loggedUser.img_url;
-    // const bio = loggedUser.bio;
+    const { id, first_name, last_name, img_url, bio } = loggedUser;
 
-    res.json({ first_name, last_name, img_url, bio });
+    res.json({ id, first_name, last_name, img_url, bio });
 });
 
 app.post("/api/users", async (req, res) => {
@@ -132,13 +131,9 @@ app.post(
     uploader.single("avatar"),
     s3upload,
     async (req, res) => {
-        console.log("req.file", req.file);
-        console.log("session", req.session);
         const id = req.session.user_id;
         const img = `https://s3.amazonaws.com/${AWS_BUCKET}/${req.file.filename}`;
         const avatar = await updateAvatar({ img, id });
-
-        console.log("avatar", avatar);
 
         if (req.file) {
             res.json(avatar);
@@ -181,7 +176,7 @@ app.get("/api/users/:otherUserId", async (req, res) => {
     const { otherUserId } = req.params;
     const { user_id } = req.session;
     const otherUser = await getUserById(otherUserId);
-    // console.log("/api/users/:otherUserId", otherUserId);
+
     if (otherUserId == user_id || !otherUser) {
         res.json(null);
         return;
@@ -207,7 +202,7 @@ function getFriendshipStatus(response, user_id) {
     }
 }
 
-app.get("/api/friendships/:user_id", async (req, res) => {
+app.get("/api/friendshipstatus/:user_id", async (req, res) => {
     const otherUserId = req.params.user_id;
     const loggedUser = req.session.user_id;
 
@@ -219,13 +214,12 @@ app.get("/api/friendships/:user_id", async (req, res) => {
 
 //FRIEND POST REQUEST
 
-app.post("/api/friendships/:user_id", async (req, res) => {
+app.post("/api/friendshipstatus/:user_id", async (req, res) => {
     const otherUserId = req.params.user_id;
     const loggedUser = req.session.user_id;
 
     const response = await getFriendship(loggedUser, otherUserId);
     const status = getFriendshipStatus(response, loggedUser);
-    console.log("POST response ", status);
 
     let newStatus;
 
@@ -271,13 +265,11 @@ app.post("/api/rejectfriendships/:user_id", async (req, res) => {
     res.json(newStatus);
 });
 
-// GET FRIENDSHIPS
+// GET FRIENDSHIPS ME
 
 app.get("/api/friendships", async (req, res) => {
-    console.log("GET friendships reacts");
     const loggedUser = req.session.user_id;
     const friendships = await getFriendships(loggedUser);
-    console.log("GET friendship response", friendships);
     res.json(
         friendships.map((friendship) => ({
             ...friendship,
@@ -287,13 +279,12 @@ app.get("/api/friendships", async (req, res) => {
     // req.json({ success: true });
 });
 
-// SEE OTHER FRIENDS
+// GET FRIENDSHIPS OTHER
 
-app.get("/api/otherfriendships/:user_id", async (req, res) => {
-    console.log("GET friendships reacts");
+app.get("/api/friendships/:user_id", async (req, res) => {
     const otherUser = req.params.user_id;
     const friendships = await getFriendships(otherUser);
-    console.log("GET friendship response", friendships);
+
     res.json(
         friendships.map((friendship) => ({
             ...friendship,
@@ -301,6 +292,38 @@ app.get("/api/otherfriendships/:user_id", async (req, res) => {
         }))
     );
     // req.json({ success: true });
+});
+
+// GET WALLMESSAGES
+
+app.get("/api/wallmessages/:user_id", async (req, res) => {
+    const { user_id } = req.params;
+    const wallMessage = await getWallMessages(user_id);
+
+    res.json(wallMessage);
+});
+
+// POST WALLMASSEGES
+
+app.post("/api/wallmessages/:user_id", async (req, res) => {
+    const recipient_id = req.params.user_id;
+    const sender_id = req.session.user_id;
+    const directmessage = req.body.directmessage;
+
+    const newWallMessage = await setWallMessages({
+        sender_id,
+        recipient_id,
+        directmessage,
+    });
+    const { first_name, last_name, img_url } = await getUserById(sender_id);
+    const newChatObj = {
+        ...newWallMessage,
+        first_name,
+        last_name,
+        img_url,
+        directmessage,
+    };
+    res.json(newChatObj);
 });
 
 // LOGOUT
@@ -318,8 +341,8 @@ server.listen(PORT, function () {
     console.log(`Express server listening on port ${PORT}`);
 });
 
-// ----- SOCET IO
-
+// ----- SOCKET IO
+const loggedUsers = {};
 io.on("connection", async (socket) => {
     console.log("[social:socket] incoming socked connection", socket.id);
     console.log("session", socket.request.session);
@@ -327,19 +350,32 @@ io.on("connection", async (socket) => {
     if (!user_id) {
         return socket.disconnect(true);
     }
+    ///// ONLINE USERS IN SOCKET
+    loggedUsers[socket.id] = user_id;
+    console.log("loggedUser", loggedUsers);
 
-    // socket.emit("thanks", {
-    //     message: "😀😎💻🐱‍👤",
-    // });
+    ///// ONLINE USER CHAT
+    // const onlineUserIds = Object.values(loggedUsers);
+    // console.log(onlineUserIds);
+    // //remove multi logged users
+    // const clearedUserIds = [...new Set(onlineUserIds)];
+    // console.log(clearedUserIds);
+    // const onlineUserDetails = await getUsersByArray(clearedUserIds);
+    // console.log("ONLINE USERS", onlineUserDetails);
+    // io.emit("onlineUser", onlineUserDetails);
 
+    ///// CHAT
+    socket.on("openChat", async function () {
+        console.log("Someone entered the chat");
+        const chatMessages = await getChatMessages();
+        socket.emit("chat", chatMessages);
+    });
     const chatMessages = await getChatMessages();
-    console.log("chat Messages", chatMessages);
-
-    socket.emit("chat", chatMessages);
+    io.emit("chat", chatMessages);
 
     socket.on("newMessage", async function ({ message }) {
-        // console.log(user_id, message);
         const sender_id = user_id;
+        const session_id = socket.request.session.user_id;
         const chatData = await setChatMessages({ sender_id, message });
         const { first_name, last_name, img_url } = await getUserById(sender_id);
         const newChatObj = {
@@ -349,36 +385,23 @@ io.on("connection", async (socket) => {
             img_url,
             sender_id,
             message,
+            session_id,
         };
-        console.log("chatData", chatData);
-        console.log("userData", newChatObj);
         io.emit("newMessage", newChatObj);
     });
-
+    /////  FRIENDREQUEST
+    socket.on("newFriendRequest", function (data) {
+        const receiverFriendRequest = Object.keys(loggedUsers).find(
+            (key) => loggedUsers[key] == data
+        );
+        io.to(receiverFriendRequest).emit("newFriendRequest", "new request");
+    });
+    ///// DISCONNECT
     console.log("user_id in socket", user_id);
-});
 
-/* io.on("connection", function (socket) {
-    console.log(`socket with the id ${socket.id} is now connected`);
-
-    if (!socket.request.session.user_id) {
-        return socket.disconnect(true);
-    }
-
-    const userId = socket.request.session.userId;
-
-    console.log("userId", userId);
-
-    socket.on("disconnect", function () {
-        console.log(`socket with the id ${socket.id} is now disconnected`);
-    });
-
-    socket.on("thanks", function (data) {
-        console.log(data);
-    });
-
-    socket.emit("welcome", {
-        message: "Welome. It is nice to see you",
+    // keep track of disconnecting users
+    socket.on("disconnect", () => {
+        console.log("see you next time", user_id);
+        delete loggedUsers[socket.id];
     });
 });
- */

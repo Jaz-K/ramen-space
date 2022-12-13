@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
 import Register from "./register";
 import Login from "./login";
 
@@ -11,6 +12,7 @@ export default function Welcome() {
                 <Routes>
                     <Route path="/" element={<Register />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </BrowserRouter>
         </section>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import UserView from "./userView";
 
-export default function Friends() {
+export default function Friends({ default_avatar }) {
     const [friendships, setFriendships] = useState([]);
 
     useEffect(() => {
@@ -16,12 +16,12 @@ export default function Friends() {
 
     async function onClick(id, action = "reject") {
         if (action === "accept") {
-            const response = await fetch(`/api/friendships/${id}`, {
+            const response = await fetch(`/api/friendshipstatus/${id}`, {
                 method: "POST",
             });
             const friendship = await response.json();
             console.log("friendship", friendship);
-            //______________________
+
             const friends = friendships.map((user) =>
                 user.user_id === id
                     ? { ...user, accepted: true, status: friendship }
@@ -63,6 +63,28 @@ export default function Friends() {
 
     return (
         <section>
+            <h2>{wannabeHeadline(friendships)}</h2>
+            <ul className="userView wannebe">
+                {friendships.map((friendship) =>
+                    friendship.accepted === false ? (
+                        <li key={friendship.user_id}>
+                            <UserView
+                                {...friendship}
+                                onClick={onClick}
+                                action="accept"
+                                default_avatar={default_avatar}
+                            />
+                            <button
+                                action="delete"
+                                onClick={() => onClick(friendship.user_id)}
+                            >
+                                Reject Friendship
+                            </button>
+                        </li>
+                    ) : null
+                )}
+            </ul>
+
             <h2>Friends</h2>
             <p>{friendsHeadline(friendships)}</p>
             <ul className="userView">
@@ -74,27 +96,6 @@ export default function Friends() {
                                 onClick={onClick}
                                 action="reject"
                             />
-                        </li>
-                    ) : null
-                )}
-            </ul>
-
-            <h2>{wannabeHeadline(friendships)}</h2>
-            <ul className="userView">
-                {friendships.map((friendship) =>
-                    friendship.accepted === false ? (
-                        <li key={friendship.user_id}>
-                            <UserView
-                                {...friendship}
-                                onClick={onClick}
-                                action="accept"
-                            />
-                            <button
-                                action="delete"
-                                onClick={() => onClick(friendship.user_id)}
-                            >
-                                Reject Friendship
-                            </button>
                         </li>
                     ) : null
                 )}

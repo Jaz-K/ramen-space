@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import DeclineButton from "./declineButton";
+import { socket } from "../socket";
 
 function getButtonLabel(status) {
     if (status === "NO_FRIENDSHIP") {
@@ -17,28 +18,29 @@ function getButtonLabel(status) {
     return "...";
 }
 
-export default function FriendButton({ user_id }) {
+export default function FriendButton({ user_id, getFriendshipStatus }) {
     const [status, setStatus] = useState(null);
 
     useEffect(() => {
         async function getFriendship() {
-            const response = await fetch(`/api/friendships/${user_id}`);
+            const response = await fetch(`/api/friendshipstatus/${user_id}`);
             const friendship = await response.json();
-            // console.log("friendship", friendship);
             setStatus(friendship);
+            getFriendshipStatus(friendship);
         }
         getFriendship();
     }, [user_id]);
 
     async function onClick(event) {
         event.preventDefault();
-        console.log("userid", user_id);
-        console.log("it clicks on friendship", status);
-        const response = await fetch(`/api/friendships/${user_id}`, {
+        const response = await fetch(`/api/friendshipstatus/${user_id}`, {
             method: "POST",
         });
         const friendship = await response.json();
         setStatus(friendship);
+        // -----------------------SOCKET
+        // emit reciver id to server check there with online socket ID
+        socket.emit("newFriendRequest", user_id);
     }
     //add a post request
 
