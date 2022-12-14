@@ -17,13 +17,14 @@ export default function Profile({
                 <div className="profileCard">
                     <img
                         className="user_img circle"
-                        src={img_url}
+                        src={img_url ? img_url : default_img}
                         alt={`${first_name} ${last_name}`}
                     />
                     <h3>
                         {first_name} {last_name}
                     </h3>
                     <h4>About me</h4>
+                    {!bio && <p>Nothing here yet</p>}
                     <EditBio bio={bio} onBioUpdate={onBioUpdate} />
                 </div>
 

@@ -143,22 +143,31 @@ export default function App() {
                                 <Link to="/users" onClick={onShroud}>
                                     Find Users
                                 </Link>
+
                                 <a href="/logout" className="logout">
                                     Logout
                                 </a>
+                                <img
+                                    src="/settings.svg"
+                                    alt="settings"
+                                    className="settings"
+                                    onClick={onAvatarClick}
+                                />
                             </div>
                             <div className="navUser navGap ">
                                 <p>Welcome {user.first_name}</p>
-                                <ProfileImage
-                                    first_name={user.first_name}
-                                    last_name={user.last_name}
-                                    avatar={
-                                        user.img_url
-                                            ? user.img_url
-                                            : DEFAULT_AVATAR
-                                    }
-                                    onClick={onAvatarClick}
-                                />
+                                <Link to="/">
+                                    <ProfileImage
+                                        first_name={user.first_name}
+                                        last_name={user.last_name}
+                                        avatar={
+                                            user.img_url
+                                                ? user.img_url
+                                                : DEFAULT_AVATAR
+                                        }
+                                        // onClick={onAvatarClick}
+                                    />
+                                </Link>
                             </div>
                         </nav>
                     </div>
@@ -192,7 +201,15 @@ export default function App() {
                             </>
                         }
                     />
-                    <Route path="/chat" element={<Chat user_id={user.id} />} />
+                    <Route
+                        path="/chat"
+                        element={
+                            <Chat
+                                user_id={user.id}
+                                default_img={DEFAULT_AVATAR}
+                            />
+                        }
+                    />
                     <Route
                         path="/friends"
                         element={<Friends default_avatar={DEFAULT_AVATAR} />}

@@ -7,7 +7,7 @@ import { socket } from "../socket";
 import { Link } from "react-router-dom";
 import { formatDistance } from "date-fns";
 
-export default function Chat({ user_id }) {
+export default function Chat({ user_id, default_img }) {
     const [chatMessage, setChatMessage] = useState([]);
     const [toggleEmoji, setToggleEmoji] = useState(false);
     const [messageString, setMessageString] = useState("");
@@ -44,7 +44,10 @@ export default function Chat({ user_id }) {
     }, [chatMessage]);
 
     function handleSubmit(event) {
-        if (event.key === "Enter" || event.type === "submit") {
+        if (
+            (event.key === "Enter" && !event.shiftKey) ||
+            event.type === "submit"
+        ) {
             const newMessage = messageString;
             event.preventDefault();
             socket.emit("newMessage", { message: newMessage });
@@ -95,7 +98,11 @@ export default function Chat({ user_id }) {
                                 <div className="chatblock">
                                     <Link to={`/users/${message.sender_id}`}>
                                         <img
-                                            src={message.img_url}
+                                            src={
+                                                message.img_url
+                                                    ? message.img_url
+                                                    : default_img
+                                            }
                                             className="chatAvatar circle"
                                         />
                                     </Link>

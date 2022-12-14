@@ -98,7 +98,7 @@ async function lastNewUsers() {
         `
         SELECT * FROM users
         ORDER BY id
-        DESC LIMIT 4
+        DESC LIMIT 5
         `
     );
     return result.rows;

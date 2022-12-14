@@ -89,7 +89,7 @@ export default function WallMessage({ user_id, img_url, default_img }) {
                     <EmojiPicker
                         className="emojiPickerWall"
                         width="100%"
-                        height="15rem"
+                        height="20rem"
                         onEmojiClick={onEmojiClick}
                         previewConfig={{ showPreview: false }}
                     />

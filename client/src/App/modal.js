@@ -57,7 +57,7 @@ export default function Modal({ onClose, onUpload, user_img, deleteProfile }) {
                     />
                 }
 
-                <label htmlFor="avatar"></label>
+                <label htmlFor="avatar" className="fileupload"></label>
                 <input
                     type="file"
                     id="avatar"

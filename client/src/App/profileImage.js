@@ -2,11 +2,11 @@ export default function ProfileImage({
     first_name,
     last_name,
     avatar,
-    onClick,
+    // onClick,
 }) {
     return (
         <img
-            onClick={onClick}
+            // onClick={onClick}
             className="logo circle"
             src={avatar}
             alt={`${first_name} ${last_name}`}

@@ -21,11 +21,12 @@ export default function FindUser({ default_avatar }) {
     return (
         <section className="findUser">
             <h1>Find users</h1>
+            <hr></hr>
             <input type="text" placeholder="search user" onChange={onChange} />
 
             {!query && <h3>New members</h3>}
             {query && <h3>Search results</h3>}
-            <ul className="userView">
+            <ul className="userView friends">
                 {users.map((user) => (
                     <li key={user.id}>
                         <Link to={`/users/${user.id}`}>

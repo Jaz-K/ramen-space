@@ -90,13 +90,17 @@ export default function OtherProfile({ default_avatar, img_url, setShroud }) {
                     getFriendshipStatus={getFriendshipStatus}
                 />
             </div>
-            {friendshipStatus === "NO_FRIENDSHIP" && (
-                <h2>You want to see more Add me</h2>
+            {(friendshipStatus === "NO_FRIENDSHIP" ||
+                friendshipStatus === "INCOMING_FRIENDSHIP") && (
+                <div className="addMe">
+                    <h2 className="addMe">Add me to see more</h2>
+                    <hr className="addMe" />
+                </div>
             )}
+
             {friendshipStatus === "ACCEPTED_FRIENDSHIP" && (
                 <WallMessage user_id={otherUserId} img_url={img_url} />
             )}
-
             <MyFriends
                 user_id={otherUserId}
                 default_img={default_avatar}

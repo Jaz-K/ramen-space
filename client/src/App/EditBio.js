@@ -24,7 +24,11 @@ export default function EditBio({ bio, onBioUpdate }) {
     function renderForm() {
         return (
             <form onSubmit={onSubmit} className="bio">
-                <textarea name="bio" defaultValue={bio}></textarea>
+                <textarea
+                    name="bio"
+                    defaultValue={bio}
+                    className="scroller"
+                ></textarea>
                 <button className="classic">Save Bio</button>
             </form>
         );
@@ -42,7 +46,7 @@ export default function EditBio({ bio, onBioUpdate }) {
                 </button>
             )}
             {bio && (
-                <button className="classic" onClick={onEditButtonClick}>
+                <button className="classic edit" onClick={onEditButtonClick}>
                     {buttonEditBio}
                 </button>
             )}
