@@ -75,6 +75,21 @@ export default function App() {
         setNewFriends(null);
     }
 
+    async function deleteProfile(event) {
+        event.preventDefault();
+        if (!confirm("Are you sure?")) {
+            return;
+        }
+        setModal(false);
+        setShroud(false);
+        console.log("it clicks");
+        const response = await fetch(`/api/remove-profile`, {
+            method: "POST",
+        });
+        const removeProfile = await response.json();
+        console.log("profile removed", removeProfile);
+    }
+
     if (!user) {
         return <h2>Its Loading</h2>;
     }
@@ -89,7 +104,7 @@ export default function App() {
                             <Link to="/">
                                 <img
                                     className="logo"
-                                    src="/logo_ramen.svg"
+                                    src="/logo_ramen_width.svg"
                                     alt="logo"
                                     title="This is some text I want to display."
                                 />
@@ -153,6 +168,7 @@ export default function App() {
                         onClose={onModalClose}
                         onUpload={onUpload}
                         user_img={user.img_url}
+                        deleteProfile={deleteProfile}
                     />
                 )}
                 <Routes>

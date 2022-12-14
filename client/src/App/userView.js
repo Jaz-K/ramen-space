@@ -11,11 +11,6 @@ export default function UserView({
     action,
     default_avatar,
 }) {
-    // useEffect(() => {
-    //     socket.on("onlineUser", (data) => {
-    //         console.log("onlineUser", data);
-    //     });
-    // }, []);
     return (
         <>
             <Link to={`/users/${user_id}`}>
@@ -27,7 +22,12 @@ export default function UserView({
             </Link>
             <p>{first_name}</p>
             <p>{last_name}</p>
-            <button onClick={() => onClick(user_id, action)}>{action}</button>
+            <button
+                className="accept classic"
+                onClick={() => onClick(user_id, action)}
+            >
+                {action}
+            </button>
         </>
     );
 }

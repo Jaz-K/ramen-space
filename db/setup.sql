@@ -12,27 +12,30 @@ CREATE TABLE users (
     img_url TEXT,
     bio TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    
 );
 
 CREATE TABLE friendships(
     id SERIAL PRIMARY KEY,
-    sender_id INT REFERENCES users(id) NOT NULL,
-    recipient_id INT REFERENCES users(id) NOT NULL,
+    sender_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    recipient_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     accepted BOOLEAN DEFAULT false,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    
 );
 
 CREATE TABLE chat(
     id SERIAL PRIMARY KEY,
-    sender_id INT REFERENCES users(id) NOT NULL,
+    sender_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     message TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    
 );
 
 CREATE TABLE directmessage(
     id SERIAL PRIMARY KEY,
-    sender_id INT REFERENCES users(id) NOT NULL,
-    recipient_id INT REFERENCES users(id) NOT NULL,
+sender_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    recipient_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     directmessage TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
     font-family: "japanese_2020italic";
     src: url("./japanese_2020_italic-webfont.woff2") format("woff2"),
         url("./japanese_2020_italic-webfont.woff") format("woff");
@@ -10,6 +10,30 @@
     font-family: "japanese_2020regular";
     src: url("./japanese_2020-webfont.woff2") format("woff2"),
         url("./japanese_2020-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+} */
+
+@font-face {
+    font-family: "shikamaruregular";
+    src: url("shikamaru-webfont.woff2") format("woff2"),
+        url("shikamaru-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "robotoitalic";
+    src: url("roboto-italic-webfont.woff2") format("woff2"),
+        url("roboto-italic-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "robotoregular";
+    src: url("roboto-regular-webfont.woff2") format("woff2"),
+        url("roboto-regular-webfont.woff") format("woff");
     font-weight: normal;
     font-style: normal;
 }

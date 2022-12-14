@@ -9,25 +9,36 @@ body {
     background-image: url("/backgroundpattern.png");
     background-repeat: repeat;
     height: 100vh;
-    /* background-color: rgb(238, 238, 238); */
 }
 html {
     font-size: 16px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "robotoregular", Arial, Helvetica, sans-serif;
+    color: #2a1a3b;
 }
 
 h1 {
+    font-family: "shikamaruregular";
     font-size: 3rem;
-    font-family: "japanese_2020italic";
     letter-spacing: 0.25rem;
 }
 h2 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
+    font-family: "shikamaruregular";
+    font-size: 2.25rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    letter-spacing: 0.25rem;
+    line-height: 2.25rem;
 }
 h3 {
-    font-size: 2rem;
+    font-size: 1.875rem;
     margin-bottom: 1rem;
+}
+h4 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+hr {
+    margin-bottom: 2rem;
 }
 main {
     /* max-width: 1000px; */
@@ -53,18 +64,18 @@ button.classic {
     border: none;
     border-radius: 1rem;
     font-size: inherit;
-    background-color: #f99b28;
+    background-color: #0aa9ef;
     color: #fff;
     font-weight: 400;
 }
 button.classic:hover {
     cursor: pointer;
-    background-color: #cc8732;
+    background-color: #85d4f7;
 }
 
 button.classic:disabled {
     cursor: not-allowed;
-    background-color: #d1bda4;
+    background-color: #b9afbe;
     color: rgb(126, 125, 125);
 }
 /* --- HEADER --- */
@@ -155,14 +166,15 @@ nav.menu a:hover {
 }
 
 /* --- WELCOME --- */
-section.welcome {
+.welcome {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
-section.welcome .logo {
-    width: 300px;
+.welcomeLogo {
+    max-width: 300px;
 }
 
 /* --- MODAL --- */
@@ -176,6 +188,9 @@ section.welcome .logo {
     cursor: pointer;
     border-radius: 50%;
     font-size: inherit;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
 }
 
 .modal {
@@ -192,7 +207,7 @@ section.welcome .logo {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    -webkit-box-shadow: 0px 0px 20px 9px rgba(0, 0, 0, 0.39);
+    -webkit-box-shadow: 0px 0px 20px 9px rgba(0, 0, 0, 0.25);
     box-shadow: 0px 0px 20px 9px rgba(0, 0, 0, 0.25);
     border-radius: 2rem;
 }
@@ -213,46 +228,49 @@ input[type="file"]:valid {
     -webkit-box-shadow: inset 0px 0px 15px -1px rgba(0, 0, 0, 0.54);
     box-shadow: inset 0px 0px 15px -1px rgba(0, 0, 0, 0.54);
 }
+.classic.newAvatarButton {
+    margin: 1rem auto 5rem;
+}
 /* --- FRIENDS MODAL --- */
 .friendModal {
     visibility: hidden;
+    width: 100%;
+    height: fit-content;
+    overflow-y: auto;
 }
 .friendModal.active {
     visibility: visible;
 }
 /* --- USER PROFILE --- */
 
-section.profile {
+.profile {
     display: flex;
-    /* justify-content: center; */
-
-    /* display: grid;
-    grid-template-columns: 30% 60%;
-    column-gap: 5%;
-    width: 100%;
-    max-width: 78.125rem;
-    padding: 0 1.5rem; */
+    gap: 2rem;
+    position: relative;
 }
 
-/* .profile section {
-    width: auto;
-} */
-section.profileCard {
+.profileCard {
     width: 40%;
     background-color: #fff;
     padding: 2rem;
     border-radius: 2rem;
     text-align: center;
     height: fit-content;
+    -webkit-box-shadow: 0px 0px 10px 9px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 10px 9px rgba(0, 0, 0, 0.15);
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
 }
-
-section.profile button.classic {
+/* -------------------------- classic */
+.profile button {
     margin: 0.5rem 0;
     width: fit-content;
 }
 
 img.user_img {
     width: 100%;
+    margin-bottom: 2rem;
 }
 .circle {
     aspect-ratio: 1/1;
@@ -270,20 +288,25 @@ form.bio {
     background: none;
     margin-bottom: 0;
 }
+.showFriends {
+    margin-bottom: 2rem;
+    cursor: pointer;
+}
+.showFriends:hover {
+    text-decoration: underline;
+}
 textarea {
     font-size: inherit;
     font-family: inherit;
     width: 100%;
     height: fit-content;
     margin-bottom: 1rem;
+    resize: none;
+    height: 5rem;
 }
-section.messageWall {
-    padding: 0;
-}
-.messageWall div {
-    position: relative;
-    display: flex;
-    padding: 1rem;
+/* --- WALL --- */
+.messageWall {
+    width: 100%;
 }
 .messageWall button {
     width: fit-content;
@@ -294,30 +317,64 @@ section.messageWall {
     height: 3rem;
 }
 .wallInsertForm {
+    max-width: 100%;
     width: 100%;
     position: relative;
+    display: flex;
+    padding: 1rem;
+    border-radius: 1rem;
+    -webkit-box-shadow: 0px 0px 10px 9px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 10px 9px rgba(0, 0, 0, 0.15);
+    margin-bottom: 3rem;
 }
-.wallInsert {
-    margin: 0 0 0 1rem;
+.wallInsertDiv {
+    display: flex;
+}
+textarea.wallInsert {
     height: fit-content;
     resize: none;
     border-radius: 1rem;
-    padding: 1rem;
+    border: 1px solid #ccc;
+    padding: 1rem 2rem 1rem 1rem;
+    margin-left: 1rem;
+}
+.wallInsertForm button[type="submit"] {
+    align-self: end;
 }
 
 .wallList {
     list-style: none;
     background-color: #fff;
     margin-bottom: 2rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    -webkit-box-shadow: 0px 0px 10px 9px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 10px 9px rgba(0, 0, 0, 0.15);
 }
 .wallSenderBlock {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.wallSender {
+    margin-left: 1rem;
+    display: inline-block;
 }
 .wallDate {
     font-size: 0.75rem;
 }
+.wallMessageBox {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 1rem;
+    white-space: pre-wrap;
+}
+/* aside.EmojiPickerReact.epr-main {
+    position: absolute;
+    right: 0;
+} */
+/* --- --- */
+
 .friendPreview {
     list-style-type: none;
     display: flex;
@@ -334,10 +391,14 @@ section.messageWall {
 .friendPreview li a {
     margin: 0;
 }
+/* --- FRIENDS ---
+.friendsOverview{
+    
+} */
 
 /* --- FIND USER ---- */
 
-section.findUser {
+.findUser {
     width: 100%;
     max-width: 78.125rem;
 }
@@ -351,7 +412,7 @@ section.findUser {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 3rem;
+    /* margin-bottom: 3rem; */
     color: inherit;
     text-decoration: none;
     font-size: 1.25rem;
@@ -367,24 +428,32 @@ section.findUser {
 }
 /*  --- FRIENDS --- */
 ul.userView {
-    display: flex;
     list-style: none;
-    flex-wrap: wrap;
-    gap: 2rem;
-    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    grid-template-rows: auto;
+    gap: 2rem 2rem;
+    margin-bottom: 4rem;
 }
 
 .userView a {
     margin-bottom: 1rem;
+    color: inherit;
+    text-decoration: none;
 }
 
 .userView li {
+    color: inherit;
+    text-decoration: none;
+    font-size: 1.25rem;
     display: flex;
     flex-direction: column;
     padding: 1.5rem;
-    background-color: rgb(212, 212, 212);
+    background-color: #fff;
     border-radius: 1rem;
     text-align: center;
+    -webkit-box-shadow: 0px 0px 10px 9px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 10px 9px rgba(0, 0, 0, 0.15);
 }
 .userView li img {
     display: inline-block;
@@ -394,11 +463,23 @@ ul.userView {
 
 .userView li button {
     margin-top: 1rem;
+    font-size: 1rem;
+}
+
+/* -------------------------------------------------------- */
+.userView button {
+    margin: 0;
+    width: 100%;
+}
+button.accept {
+    background-color: #2a1a3b;
 }
 
 ul.wannebe {
+    display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
+    padding: 1rem 0;
 }
 
 .wannebe li {
@@ -502,14 +583,14 @@ input:invalid + label {
 }
 
 .logo {
-    width: 3.75rem;
+    height: 4rem;
 }
 .error {
     color: red;
 }
 
 /* --- CHAT --- */
-section.chat {
+.chat {
     width: fit-content;
 }
 .chat ul {
@@ -548,11 +629,11 @@ li.chatList a {
     justify-content: flex-end;
 }
 .chatMsgMe {
-    background-color: #86daf3;
+    background-color: #85d4f7;
     white-space: pre-wrap;
 }
 .chatMsgYou {
-    background-color: #f5d7b2;
+    background-color: #fed5e4;
     white-space: pre-wrap;
 }
 .chatMsg {
@@ -565,6 +646,7 @@ li.chatList a {
     padding: 1rem;
     border: 1px solid #f99b28;
     resize: none;
+    margin: 0;
 }
 .chatInsertForm {
     position: relative;
@@ -577,13 +659,7 @@ li.chatList a {
     border: none;
     background: transparent;
     font-size: inherit;
-}
-textarea.chatInsert:focus-visible,
-textarea.chatInsert:visible,
-textarea.chatInsert:target {
-    outline-color: #86daf3;
-    border: 2px solid #86daf3;
-    background-color: #c01f52;
+    cursor: pointer;
 }
 
 .chatAvatar {
@@ -591,19 +667,30 @@ textarea.chatInsert:target {
     height: 3rem;
 }
 
+.chat button.classic {
+    margin: 0 auto 0;
+}
 /* --- footer --- */
 footer {
     padding: 1.5rem;
     background-color: #fff;
     width: 100%;
     text-align: center;
+    margin-top: 4rem;
 }
 
 @media screen and (max-width: 992px) {
+    .profileCard {
+        width: fit-content;
+    }
 }
 @media screen and (max-width: 768px) {
     .modal {
         width: 80%;
+    }
+    .friendModal {
+        height: 100%;
+        width: 100%;
     }
     .menuClose {
         visibility: visible;
@@ -654,12 +741,15 @@ footer {
     .logout {
         margin-top: 2rem;
     }
+    .formStyle {
+        padding: 2rem;
+    }
 }
 @media screen and (max-width: 576px) {
-    section.profile {
+    .profile {
         flex-direction: column;
     }
-    section.profileCard {
+    .profileCard {
         width: 100%;
     }
 }

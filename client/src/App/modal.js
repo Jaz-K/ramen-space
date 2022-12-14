@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function Modal({ onClose, onUpload, user_img }) {
+export default function Modal({ onClose, onUpload, user_img, deleteProfile }) {
     const [image, setImage] = useState("");
     const [imgPreview, setImagePreview] = useState();
     const DEFAULT_AVATAR = "/avatar.svg";
@@ -45,7 +45,8 @@ export default function Modal({ onClose, onUpload, user_img }) {
             <button onClick={onClose} className="closeButton">
                 ✖
             </button>
-            <h2>Upload New Avatar</h2>
+            <h2>Settings</h2>
+            <hr />
             <form onSubmit={avatarUpload}>
                 {
                     <img
@@ -64,7 +65,14 @@ export default function Modal({ onClose, onUpload, user_img }) {
                     name="avatar"
                     onChange={handleChange}
                 />
-                <button className="classic">Upload Avatar</button>
+                <button className="classic newAvatarButton">
+                    Upload Avatar
+                </button>
+            </form>
+            <h2>Delete Profile</h2>
+            <hr />
+            <form onSubmit={deleteProfile}>
+                <button className="classic">Delete Profile</button>
             </form>
         </section>
     );

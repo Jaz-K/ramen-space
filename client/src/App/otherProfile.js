@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FriendButton from "./friendButton";
 import MyFriends from "./myFriends";
 import WallMessage from "./wallMessage";
@@ -28,7 +28,7 @@ export default function OtherProfile({ default_avatar, img_url, setShroud }) {
             }
         }
         getUser();
-    }, [otherUserId]);
+    }, [otherUserId, friendshipStatus]);
 
     function showFriendsPreview(friends) {
         setFriends(friends);
@@ -52,26 +52,23 @@ export default function OtherProfile({ default_avatar, img_url, setShroud }) {
 
     return (
         <section className="profile">
-            <section className="profileCard">
+            <div className="profileCard">
                 <img
                     className="user_img circle"
                     src={otherUser.img_url ? otherUser.img_url : default_avatar}
                     alt={`${otherUser.first_name} ${otherUser.last_name}`}
                 />
-                <FriendButton
-                    user_id={otherUserId}
-                    getFriendshipStatus={getFriendshipStatus}
-                />
-                <h2>
+
+                <h3>
                     {otherUser.first_name} {otherUser.last_name}
-                </h2>
-                <h3>About me</h3>
-                <p>{otherUser.bio}</p>
+                </h3>
+                <h4>About me</h4>
+                <p className="bioText">{otherUser.bio}</p>
 
                 {!friends.length == 0 && <h3>Friends</h3>}
 
                 <ul className="friendPreview">
-                    {friends.map((friend) => (
+                    {friends.slice(0, 4).map((friend) => (
                         <li key={friend.user_id}>
                             <Link to={`/users/${friend.user_id}`}>
                                 <img
@@ -84,10 +81,18 @@ export default function OtherProfile({ default_avatar, img_url, setShroud }) {
                     ))}
                 </ul>
                 {!friends.length == 0 && (
-                    <p onClick={moreFriends}>show all Friends</p>
+                    <p onClick={moreFriends} className="showFriends">
+                        show all Friends
+                    </p>
                 )}
-            </section>
-
+                <FriendButton
+                    user_id={otherUserId}
+                    getFriendshipStatus={getFriendshipStatus}
+                />
+            </div>
+            {friendshipStatus === "NO_FRIENDSHIP" && (
+                <h2>You want to see more Add me</h2>
+            )}
             {friendshipStatus === "ACCEPTED_FRIENDSHIP" && (
                 <WallMessage user_id={otherUserId} img_url={img_url} />
             )}

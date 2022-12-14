@@ -14,7 +14,7 @@ const path = require("path");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
 
-const { s3upload } = require("../s3");
+const { s3upload, s3delete } = require("../s3");
 
 const { PORT = 3001, AWS_BUCKET, SESSION_SECRET } = process.env;
 
@@ -38,6 +38,9 @@ const {
     getWallMessages,
     setWallMessages,
     // getUsersByArray,
+    deleteUser,
+    deleteFriendships,
+    deleteChatMessages,
 } = require("../db");
 //middleware
 
@@ -132,13 +135,28 @@ app.post(
     s3upload,
     async (req, res) => {
         const id = req.session.user_id;
-        const img = `https://s3.amazonaws.com/${AWS_BUCKET}/${req.file.filename}`;
-        const avatar = await updateAvatar({ img, id });
+        const userImg = await getUserById(id);
+        const { img_url } = userImg;
 
-        if (req.file) {
-            res.json(avatar);
+        if (!img_url) {
+            const img = `https://s3.amazonaws.com/${AWS_BUCKET}/${req.file.filename}`;
+            const avatar = await updateAvatar({ img, id });
+            if (req.file) {
+                res.json(avatar);
+            } else {
+                res.json({ success: false });
+            }
+            return;
         } else {
-            res.json({ success: false });
+            await s3delete(img_url.slice(36));
+            const img = `https://s3.amazonaws.com/${AWS_BUCKET}/${req.file.filename}`;
+            const avatar = await updateAvatar({ img, id });
+            if (req.file) {
+                res.json(avatar);
+            } else {
+                res.json({ success: false });
+            }
+            return;
         }
     }
 );
@@ -325,11 +343,27 @@ app.post("/api/wallmessages/:user_id", async (req, res) => {
     };
     res.json(newChatObj);
 });
+// DELETE PROFILE
 
+app.post("/api/remove-profile", async (req, res) => {
+    const user_id = req.session.user_id;
+    const userImg = await getUserById(user_id);
+    const { img_url } = userImg;
+    if (img_url) {
+        await s3delete(img_url.slice(36));
+    }
+    await deleteUser(user_id);
+    await deleteFriendships(user_id);
+    await deleteChatMessages(user_id);
+
+    req.session = null;
+    res.redirect("/login");
+});
 // LOGOUT
 
 app.get("/logout", (req, res) => {
-    (req.session = null), res.redirect("/");
+    req.session = null;
+    res.redirect("/");
 });
 
 ///////
@@ -355,11 +389,11 @@ io.on("connection", async (socket) => {
     console.log("loggedUser", loggedUsers);
 
     ///// ONLINE USER CHAT
-    // const onlineUserIds = Object.values(loggedUsers);
-    // console.log(onlineUserIds);
-    // //remove multi logged users
-    // const clearedUserIds = [...new Set(onlineUserIds)];
-    // console.log(clearedUserIds);
+    const onlineUserIds = Object.values(loggedUsers);
+    console.log(onlineUserIds);
+    //remove multi logged users
+    const clearedUserIds = [...new Set(onlineUserIds)];
+    console.log(clearedUserIds);
     // const onlineUserDetails = await getUsersByArray(clearedUserIds);
     // console.log("ONLINE USERS", onlineUserDetails);
     // io.emit("onlineUser", onlineUserDetails);

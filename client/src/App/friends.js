@@ -3,6 +3,8 @@ import UserView from "./userView";
 
 export default function Friends({ default_avatar }) {
     const [friendships, setFriendships] = useState([]);
+    const [wannabe, setWannabe] = useState(false);
+    const [friends, setFriends] = useState(false);
 
     useEffect(() => {
         async function getFriendships() {
@@ -13,6 +15,24 @@ export default function Friends({ default_avatar }) {
         }
         getFriendships();
     }, []);
+
+    useEffect(() => {
+        const status = friendships.map((friendship) => friendship.status);
+        console.log("status", status);
+        if (!status.includes("ACCEPTED_FRIENDSHIP")) {
+            setFriends(true);
+            return;
+        }
+
+        const statusWannabe = friendships.map(
+            (friendship) => friendship.status
+        );
+        console.log("status", statusWannabe);
+        if (!status.includes("INCOMING_FRIENDSHIP")) {
+            setWannabe(true);
+            return;
+        }
+    }, [friendships]);
 
     async function onClick(id, action = "reject") {
         if (action === "accept") {
@@ -42,52 +62,53 @@ export default function Friends({ default_avatar }) {
                 (user) => user.user_id !== id
             );
             setFriendships(newFriends);
-        }
-    }
 
-    function wannabeHeadline(friendships) {
-        const status = friendships.map((friendship) => friendship.status);
-        console.log("status", status);
-        if (status.includes("INCOMING_FRIENDSHIP")) {
-            return "Wannabe";
-        }
-    }
-    function friendsHeadline(friendships) {
-        const status = friendships.map((friendship) => friendship.status);
-        console.log("status", status);
+            function friendsHeadline(friendships) {
+                const status = friendships.map(
+                    (friendship) => friendship.status
+                );
+                console.log("status", status);
 
-        if (!status.includes("ACCEPTED_FRIENDSHIP")) {
-            return "No friends yet";
+                if (!status.includes("ACCEPTED_FRIENDSHIP")) {
+                    return "No friends yet";
+                }
+            }
+            friendsHeadline(friendships);
         }
     }
 
     return (
-        <section>
-            <h2>{wannabeHeadline(friendships)}</h2>
-            <ul className="userView wannebe">
-                {friendships.map((friendship) =>
-                    friendship.accepted === false ? (
-                        <li key={friendship.user_id}>
-                            <UserView
-                                {...friendship}
-                                onClick={onClick}
-                                action="accept"
-                                default_avatar={default_avatar}
-                            />
-                            <button
-                                action="delete"
-                                onClick={() => onClick(friendship.user_id)}
-                            >
-                                Reject Friendship
-                            </button>
-                        </li>
-                    ) : null
-                )}
-            </ul>
+        <section className="friendsOverview">
+            {!wannabe && <h2>Wannabe</h2>}
+            {!wannabe && <hr />}
 
+            {!wannabe && (
+                <ul className="userView wannebe">
+                    {friendships.map((friendship) =>
+                        friendship.accepted === false ? (
+                            <li key={friendship.user_id}>
+                                <UserView
+                                    {...friendship}
+                                    onClick={onClick}
+                                    action="accept"
+                                    default_avatar={default_avatar}
+                                />
+                                <button
+                                    className="classic"
+                                    action="delete"
+                                    onClick={() => onClick(friendship.user_id)}
+                                >
+                                    reject
+                                </button>
+                            </li>
+                        ) : null
+                    )}
+                </ul>
+            )}
             <h2>Friends</h2>
-            <p>{friendsHeadline(friendships)}</p>
-            <ul className="userView">
+            <hr />
+            {!friends && <h3>No friends yet</h3>}
+            <ul className="userView friends">
                 {friendships.map((friendship) =>
                     friendship.accepted === true ? (
                         <li key={friendship.user_id}>

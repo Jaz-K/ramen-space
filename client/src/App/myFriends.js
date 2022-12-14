@@ -33,7 +33,7 @@ export default function MyFriends({
                 ✖
             </button>
             <h2>My friends</h2>
-
+            <hr />
             <ul className="userView">
                 {friends.map((user) =>
                     user.accepted === true ? (

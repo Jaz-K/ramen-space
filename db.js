@@ -197,18 +197,21 @@ async function getChatMessages() {
         users.first_name, users.last_name, users.img_url
         FROM chat JOIN users
         ON (users.id = chat.sender_id)
-        LIMIT 20
+        ORDER BY id DESC LIMIT 10 
+        
     `);
     return result.rows;
 }
+//LIMIT 10;
 
-// async function getUsersByArray(id) {
-//     console.log("ID", id);
-//     const result = db.query(`SELECT * FROM users WHERE id IN $1`, [id]);
+// async function getUsersByArray(ids) {
+//     // return console.log("ID", id);
+//     const result = db.query(`SELECT * FROM users WHERE id = ANY(ARRAY $1)`, [
+//         ids,
+//     ]);
+//     console.log("IDS", ids);
 //     return result.rows;
 // }
-// LIMIT 20
-// limiting the chat entries??  ORDER BY id  DESC LIMIT 20
 
 async function setChatMessages({ sender_id, message }) {
     const result = await db.query(
@@ -252,6 +255,25 @@ async function setWallMessages({ sender_id, recipient_id, directmessage }) {
     return result.rows[0];
 }
 
+// DELETE PROFILE
+
+function deleteUser(id) {
+    return db.query(`DELETE FROM users WHERE id = $1`, [id]);
+}
+
+function deleteFriendships(id) {
+    return db.query(
+        `
+    DELETE FROM friendships
+    WHERE sender_id = $1 AND recipient_id = $1`,
+        [id]
+    );
+}
+
+function deleteChatMessages(id) {
+    return db.query(`DELETE FROM chat WHERE id = $1`, [id]);
+}
+
 // async function getMualfriends({loggedUser, therUser}){}
 module.exports = {
     createUser,
@@ -271,4 +293,7 @@ module.exports = {
     getWallMessages,
     setWallMessages,
     // getUsersByArray,
+    deleteUser,
+    deleteFriendships,
+    deleteChatMessages,
 };

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function FindUser({ default_avatar }) {
     const [users, setUsers] = useState([]);
+
     const [query, setQuery] = useState("");
 
     useEffect(() => {
@@ -22,9 +23,9 @@ export default function FindUser({ default_avatar }) {
             <h1>Find users</h1>
             <input type="text" placeholder="search user" onChange={onChange} />
 
-            {!query && <h3>Our last new Users</h3>}
-            {query && <h3>Is it what you searching for</h3>}
-            <ul>
+            {!query && <h3>New members</h3>}
+            {query && <h3>Search results</h3>}
+            <ul className="userView">
                 {users.map((user) => (
                     <li key={user.id}>
                         <Link to={`/users/${user.id}`}>
@@ -35,7 +36,7 @@ export default function FindUser({ default_avatar }) {
                                 }
                                 alt={`${user.first_name} ${user.last_name}`}
                             />
-                            {user.first_name} {user.last_name}
+                            <p>{user.first_name}</p> <p>{user.last_name}</p>
                         </Link>
                     </li>
                 ))}

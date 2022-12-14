@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import EmojiPicker, { Theme } from "emoji-picker-react";
+import EmojiPicker from "emoji-picker-react";
 
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 
-export default function WallMessage({ user_id, img_url }) {
+export default function WallMessage({ user_id, img_url, default_img }) {
     const [wallMessage, setWallMessage] = useState([]);
     const [toggleEmoji, setToggleEmoji] = useState(false);
     const [messageString, setMessageString] = useState("");
@@ -53,11 +53,16 @@ export default function WallMessage({ user_id, img_url }) {
     }
 
     return (
-        <section className="messageWall">
-            <h2>Wallmessage</h2>
+        <div className="messageWall">
+            <h2>Feed</h2>
+            <hr />
             <form onSubmit={handleSubmit} className="wallInsertForm">
-                <div>
-                    <img src={img_url} alt="" className="wallImg circle" />{" "}
+                <div className="wallInsertDiv">
+                    <img
+                        src={img_url ? img_url : default_img}
+                        alt=""
+                        className="wallImg circle"
+                    />{" "}
                     <textarea
                         className="wallInsert"
                         onKeyDown={handleSubmit}
@@ -70,7 +75,9 @@ export default function WallMessage({ user_id, img_url }) {
                         onClick={() => setToggleEmoji(false)}
                     ></textarea>
                 </div>
-                <button type="submit">Send</button>
+                <button type="submit" className="classic">
+                    Send
+                </button>
                 <button
                     onClick={clickEmojiHandler}
                     type="button"
@@ -80,23 +87,29 @@ export default function WallMessage({ user_id, img_url }) {
                 </button>
                 {toggleEmoji && (
                     <EmojiPicker
-                        width={320}
+                        className="emojiPickerWall"
+                        width="100%"
+                        height="15rem"
                         onEmojiClick={onEmojiClick}
-                        theme={Theme.AUTO}
+                        previewConfig={{ showPreview: false }}
                     />
                 )}
             </form>
             <ul>
                 {wallMessage.map((message) => (
                     <li key={message.id} className="wallList">
-                        <div>
+                        <div className="wallSenderBlock">
                             <Link to={`/users/${message.sender_id}`}>
                                 <img
-                                    src={message.img_url}
+                                    src={
+                                        message.img_url
+                                            ? message.img_url
+                                            : default_img
+                                    }
                                     className="chatAvatar circle"
                                 />
                             </Link>
-                            <div className="wallSenderBlock">
+                            <div className="wallSender">
                                 <p className="">
                                     {message.first_name} {message.last_name}
                                 </p>
@@ -105,14 +118,14 @@ export default function WallMessage({ user_id, img_url }) {
                                 </p>
                             </div>
                         </div>
-                        <div className="chatblock chatblockMe">
-                            <p className="chatMsg chatMsgMe">
+                        <div className="wallMessageBox">
+                            <p className="wallMessage">
                                 {message.directmessage}
                             </p>
                         </div>
                     </li>
                 ))}
             </ul>
-        </section>
+        </div>
     );
 }
