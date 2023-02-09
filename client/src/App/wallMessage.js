@@ -37,6 +37,7 @@ export default function WallMessage({ user_id, img_url, default_img }) {
             console.log("data handle submit", data);
             setWallMessage((wallMessage) => [data, ...wallMessage]);
             setMessageString("");
+            setToggleEmoji(false);
         }
     }
 

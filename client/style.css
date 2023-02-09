@@ -60,7 +60,7 @@ section {
 button.classic {
     margin: 1rem auto 1rem;
     display: inline;
-    width: fit-content;
+    width: 100%;
     padding: 0.5rem 2rem;
     border: none;
     border-radius: 1rem;
@@ -300,10 +300,10 @@ label .imgPreview {
 }
 
 /* -------------------------- classic */
-.profile button {
+/* .profile button {
     margin: 0.5rem 0;
     width: 100%;
-}
+} */
 
 img.user_img {
     width: 100%;

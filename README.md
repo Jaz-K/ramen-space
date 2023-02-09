@@ -27,6 +27,12 @@ _project done during the SPICED academy Full Stack Web Development bootcamp_
 
 <kbd><img src="client/public/gifs/01-ramen-space-login.gif" width="80vw"/></kbd>
 
+### Profile & Feed
+
+<kbd><img src="client/public/gifs/02-ramen-space-profile.gif" width="80vw"/></kbd>
+</br>
+<kbd><img src="client/public/gifs/03-ramen-space-profile-image.gif" width="80vw"/></kbd>
+
 ### More
 
 -   Backgroundpattern and Burgermenu Icon made by me

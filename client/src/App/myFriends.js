@@ -38,7 +38,10 @@ export default function MyFriends({
                 {friends.map((user) =>
                     user.accepted === true ? (
                         <li key={user.user_id}>
-                            <Link to={`/users/${user.user_id}`}>
+                            <Link
+                                to={`/users/${user.user_id}`}
+                                onClick={onClose}
+                            >
                                 <img
                                     className="circle "
                                     src={
