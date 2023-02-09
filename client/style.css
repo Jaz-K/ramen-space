@@ -644,6 +644,7 @@ input:invalid + label {
 /* --- CHAT --- */
 .chat {
     width: fit-content;
+    margin: auto;
 }
 .chat ul {
     width: 20rem;

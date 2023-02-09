@@ -39,8 +39,8 @@ const {
     setWallMessages,
     // getUsersByArray,
     deleteUser,
-    deleteFriendships,
-    deleteChatMessages,
+    // deleteFriendships,
+    // deleteChatMessages,
 } = require("../db");
 //middleware
 
@@ -352,12 +352,13 @@ app.post("/api/remove-profile", async (req, res) => {
     if (img_url) {
         await s3delete(img_url.slice(36));
     }
-    await deleteUser(user_id);
-    await deleteFriendships(user_id);
-    await deleteChatMessages(user_id);
+    const response = await deleteUser(user_id);
+    // await deleteFriendships(user_id);
+    // await deleteChatMessages(user_id);
 
     req.session = null;
-    res.redirect("/login");
+    res.json(response);
+    // res.redirect("/");
 });
 // LOGOUT
 

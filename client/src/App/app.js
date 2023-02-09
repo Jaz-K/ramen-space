@@ -88,6 +88,7 @@ export default function App() {
         });
         const removeProfile = await response.json();
         console.log("profile removed", removeProfile);
+        window.location.href = "/";
     }
 
     if (!user) {
