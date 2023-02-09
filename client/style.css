@@ -114,7 +114,6 @@ button.classic:disabled {
     z-index: 1;
 }
 
-/*  */
 header {
     width: 100%;
     margin-bottom: 3rem;
@@ -132,6 +131,9 @@ div.header {
 }
 .settings {
     width: 1.5rem;
+}
+.settings:hover {
+    cursor: pointer;
 }
 .burerMenuIcon {
     width: 35px;
