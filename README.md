@@ -9,6 +9,7 @@ _project done during the SPICED academy Full Stack Web Development bootcamp_
 -   PostgreSQL
 -   AWS
 -   Socket.io
+-   CSS
 
 ## Project Overview
 
@@ -32,6 +33,10 @@ _project done during the SPICED academy Full Stack Web Development bootcamp_
 <kbd><img src="client/public/gifs/02-ramen-space-profile.gif" width="80vw"/></kbd>
 </br>
 <kbd><img src="client/public/gifs/03-ramen-space-profile-image.gif" width="80vw"/></kbd>
+
+### Find and add User
+
+<kbd><img src="client/public/gifs/04-ramen-space-find-add-user.gif" width="80vw"/></kbd>
 
 ### More
 

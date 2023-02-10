@@ -384,6 +384,7 @@ textarea.wallInsert {
 .wallInsertForm button[type="submit"] {
     align-self: end;
     width: fit-content;
+    margin: 0;
 }
 
 .wallList {
@@ -749,7 +750,7 @@ footer {
     .modal {
         width: 80%;
         height: 100%;
-        top: 60%;
+        top: 50%;
         overflow-y: scroll;
     }
     .friendModal {
