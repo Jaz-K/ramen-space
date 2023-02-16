@@ -48,7 +48,8 @@ Shows a preview of the profile image before saving it.
 
 Find Users shows up the last five new user Profiles
 While typing, profiles with matching letter combinations are shown up (first name like last name )
-If a new friend request comes in a little notification icon popo up next to Friends
+If a new friend request comes in a little notification icon popo up next to Friends.
+
 <kbd><img src="client/public/gifs/04-ramen-space-find-add-user.gif" width="80vw"/></kbd>
 
 ### Chat
